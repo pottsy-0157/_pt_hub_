@@ -251,17 +251,26 @@
     }
   });
 
-    const logo = document.getElementById("logo"); // or any element
-let pressTimer;
+    const logo = document.getElementById("logo");
 
-logo.addEventListener("touchstart", () => {
-  pressTimer = setTimeout(() => {
-    window.location.href = "admin.html";
-  }, 2000); // 4 seconds
-});
+let tapCount = 0;
+let tapTimer;
 
 logo.addEventListener("touchend", () => {
-  clearTimeout(pressTimer);
+  tapCount++;
+
+  if (tapCount === 3) {
+    // Reset and redirect
+    tapCount = 0;
+    clearTimeout(tapTimer);
+    window.location.href = "admin.html";
+  } else {
+    // Reset counter if no more taps within 500ms
+    clearTimeout(tapTimer);
+    tapTimer = setTimeout(() => {
+      tapCount = 0;
+    }, 500); // Adjust time gap between taps
+  }
 });
 
 </script>

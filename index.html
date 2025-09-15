@@ -256,20 +256,23 @@
 let tapCount = 0;
 let tapTimer;
 
-logo.addEventListener("touchend", () => {
+logo.addEventListener("click", (e) => {
+  e.preventDefault(); // stop link from instantly reloading
+
   tapCount++;
 
   if (tapCount === 3) {
-    // Reset and redirect
     tapCount = 0;
     clearTimeout(tapTimer);
-    window.location.href = "admin.html";
+    window.location.href = "admin.html"; // triple tap → admin
   } else {
-    // Reset counter if no more taps within 500ms
     clearTimeout(tapTimer);
     tapTimer = setTimeout(() => {
+      if (tapCount === 1) {
+        window.location.href = "index.html"; // single tap → home
+      }
       tapCount = 0;
-    }, 500); // Adjust time gap between taps
+    }, 500); // max gap allowed between taps
   }
 });
 

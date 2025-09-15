@@ -250,8 +250,23 @@
       }
     }
   });
+
+    const logo = document.getElementById("logo"); // or any element
+let pressTimer;
+
+logo.addEventListener("touchstart", () => {
+  pressTimer = setTimeout(() => {
+    window.location.href = "admin.html";
+  }, 4000); // 4 seconds
+});
+
+logo.addEventListener("touchend", () => {
+  clearTimeout(pressTimer);
+});
+
 </script>
   </script>
 
   </body>
+
 </html>

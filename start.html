@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workout Box</title>
+    <style>
+      body {
+        background: #111;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+
+      /* Collapsed Workout Card */
+      .workout-card {
+        border: 2px solid #e6c200;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        background: #000;
+      }
+
+      .card-header {
+        padding: 15px;
+        background: #000;
+      }
+
+      .card-header h3 {
+        color: #e6c200;
+        margin: 0;
+      }
+
+      .card-meta {
+        display: flex;
+        gap: 15px;
+        font-size: 0.9rem;
+        margin-top: 5px;
+      }
+
+      .start-btn {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        background: #e6c200;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      /* Expanded Section */
+      .card-expanded {
+        display: none;
+        background: #1a1a1a;
+        padding: 15px;
+        border-top: 1px solid #333;
+      }
+
+      .controls {
+        display: flex;
+        gap: 10px;
+        margin: 10px 0;
+      }
+
+      .controls button {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .pause {
+        background: #222;
+        color: #fff;
+      }
+      .reset {
+        background: #333;
+        color: #fff;
+      }
+      .cancel {
+        background: #a00;
+        color: #fff;
+      }
+
+      .conditioning {
+        margin: 15px 0;
+        padding: 10px;
+        background: #2a2a2a;
+        border-radius: 8px;
+      }
+
+      .finish-box {
+        margin-top: 15px;
+        background: #093;
+        color: #fff;
+        padding: 12px;
+        border-radius: 8px;
+        text-align: center;
+      }
+
+      .finish-btn {
+        margin-top: 10px;
+        padding: 10px;
+        width: 100%;
+        border: none;
+        border-radius: 6px;
+        background: #0c0;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="workout-card" id="workoutCard">
+      <!-- Collapsed -->
+      <div class="card-header">
+        <h3>LOWER STRENGTH + EASY RUN</h3>
+        <div class="card-meta">
+          <span>⏱ 1 hour</span>
+          <span>📊 Advanced</span>
+          <span>💪 Sets & Reps</span>
+        </div>
+        <button class="start-btn" id="startBtn">▶ Let's get started!</button>
+      </div>
+
+      <!-- Expanded -->
+      <div class="card-expanded" id="cardExpanded">
+        <h4>Workout Details</h4>
+        <p><strong>Strength Focus:</strong> Lower Body & Conditioning</p>
+        <p><strong>Duration:</strong> 60 mins</p>
+
+        <div class="controls">
+          <button class="pause">Pause</button>
+          <button class="reset">Reset</button>
+          <button class="cancel" id="cancelBtn">Cancel Workout</button>
+        </div>
+
+        <div class="conditioning">
+          <h4>Conditioning Block</h4>
+          <p>4 x 12' EMOM</p>
+          <ul>
+            <li>8 x BB Push Press</li>
+            <li>8 x DB Row</li>
+            <li>12 x Hanging Leg Raise</li>
+            <li>Rest</li>
+          </ul>
+        </div>
+
+        <div class="finish-box">
+          <h4>Mark Workout Complete! 💪</h4>
+          <button class="finish-btn" id="finishBtn">Finish Workout</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const startBtn = document.getElementById("startBtn");
+      const cancelBtn = document.getElementById("cancelBtn");
+      const finishBtn = document.getElementById("finishBtn");
+      const expanded = document.getElementById("cardExpanded");
+
+      startBtn.addEventListener("click", () => {
+        expanded.style.display = "block";
+        startBtn.style.display = "none";
+      });
+
+      cancelBtn.addEventListener("click", () => {
+        expanded.style.display = "none";
+        startBtn.style.display = "block";
+      });
+
+      finishBtn.addEventListener("click", () => {
+        expanded.style.display = "none";
+        startBtn.style.display = "block";
+        alert("Workout saved ✅");
+      });
+    </script>
+  </body>
+</html>

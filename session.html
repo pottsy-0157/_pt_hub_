@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workout Session</title>
+    <style>
+      body {
+        background: #111;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        padding: 1rem;
+      }
+      .session-detail,
+      .workout-detail {
+        background: #222;
+        padding: 1rem;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+      }
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      h2 {
+        margin: 0.5rem 0;
+      }
+      .title-actions button {
+        margin-left: 0.5rem;
+        padding: 0.3rem 0.6rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      #workoutTextWrapper {
+        margin-top: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="session-detail">
+      <h2 id="workout-title">Workout Name</h2>
+      <p>
+        📅 <span id="workout-day"></span> | 🕕 <span id="workout-time"></span>
+      </p>
+      <p>📍 Elev8 Athletics</p>
+      <p><strong>Coach:</strong> Lewis Potts</p>
+    </div>
+
+    <div class="workout-detail">
+      <div class="workout-title-row">
+        <h2>Today's Workout</h2>
+        <div class="title-actions">
+          <button id="toggleWorkoutBtn">Show workout</button>
+          <button id="copyWorkoutBtn">Copy</button>
+        </div>
+      </div>
+      <div id="workoutTextWrapper" style="display: none">
+        <div id="workoutText"></div>
+      </div>
+    </div>
+
+    <script>
+      // Load the clicked workout from sessionStorage
+      const workout = JSON.parse(
+        sessionStorage.getItem("selectedWorkout") || "{}"
+      );
+
+      // Fill in session info
+      document.getElementById("workout-title").textContent =
+        workout.name || "No Workout Selected";
+      document.getElementById("workout-day").textContent = workout.day || "";
+      document.getElementById("workout-time").textContent = workout.time || "";
+      document.getElementById("workoutText").innerHTML =
+        workout.details || "<p>No details added</p>";
+
+      // Toggle workout details
+      document.getElementById("toggleWorkoutBtn").onclick = () => {
+        const wrapper = document.getElementById("workoutTextWrapper");
+        const isVisible = wrapper.style.display === "block";
+        wrapper.style.display = isVisible ? "none" : "block";
+        document.getElementById("toggleWorkoutBtn").textContent = isVisible
+          ? "Show workout"
+          : "Hide workout";
+      };
+
+      // Copy workout details
+      document.getElementById("copyWorkoutBtn").onclick = () => {
+        navigator.clipboard.writeText(workout.details || "");
+        alert("Workout copied!");
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Session Detail</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #111;
+        color: #eee;
+        padding: 20px;
+      }
+      .session-detail {
+        background: #222;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+      .workout-detail {
+        background: #222;
+        padding: 20px;
+        border-radius: 10px;
+      }
+      .workout-title-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      button {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        background: #4caf50;
+        color: #fff;
+        cursor: pointer;
+        margin-left: 10px;
+      }
+      button:hover {
+        background: #45a049;
+      }
+      .collapsible {
+        display: none;
+        margin-top: 15px;
+      }
+      .class-card {
+        background: #333;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+      }
+      .class-info span {
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="session-detail">
+      <h2 id="workout-title"></h2>
+      <p>📅 <span id="workout-time"></span></p>
+      <p>📍 Elev8 Athletics</p>
+      <p><strong>Coach:</strong> Lewis Potts</p>
+    </div>
+
+    <div class="workout-detail">
+      <div class="workout-title-row">
+        <h2>Today's Workout</h2>
+        <div class="title-actions">
+          <button id="toggleWorkoutBtn">Show workout</button>
+          <button id="copyWorkoutBtn">Copy</button>
+        </div>
+      </div>
+      <div id="workoutTextWrapper" class="collapsible">
+        <div id="workoutText"></div>
+      </div>
+    </div>
+
+    <div class="class-card">
+      <h3 id="class-title"></h3>
+      <div class="class-info">
+        <span>⏱ 1 hour</span>
+        <span>📊 Advanced</span>
+        <span>💪 Sets & Reps</span>
+      </div>
+      <button class="start-btn">▶ Let's get started!</button>
+    </div>
+
+    <script>
+      // Grab ID from URL
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+
+      const sessions = JSON.parse(localStorage.getItem("sessions")) || [];
+      const session = sessions.find((s) => s.id == id);
+
+      if (session) {
+        document.getElementById("workout-title").textContent = session.name;
+        document.getElementById("class-title").textContent = session.name;
+        document.getElementById("workout-time").textContent = session.time;
+        document.getElementById("workoutText").innerHTML =
+          session.details.replace(/\n/g, "<br>");
+      } else {
+        document.body.innerHTML = "<p>Session not found.</p>";
+      }
+
+      // Toggle button
+      document
+        .getElementById("toggleWorkoutBtn")
+        .addEventListener("click", () => {
+          const wrapper = document.getElementById("workoutTextWrapper");
+          const btn = document.getElementById("toggleWorkoutBtn");
+          if (wrapper.style.display === "block") {
+            wrapper.style.display = "none";
+            btn.textContent = "Show workout";
+          } else {
+            wrapper.style.display = "block";
+            btn.textContent = "Hide workout";
+          }
+        });
+
+      // Copy button
+      document
+        .getElementById("copyWorkoutBtn")
+        .addEventListener("click", () => {
+          const text = document.getElementById("workoutText").innerText;
+          navigator.clipboard.writeText(text);
+          alert("Workout copied!");
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workout Detail</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <!-- Session Info -->
+    <div class="session-detail">
+      <h2 id="workout-title">LOWER STRENGTH + EASY RUN</h2>
+      <p>📅 <span id="friday-date"></span> | 🕕 6:00 am – 7:00 am (UK)</p>
+      <p>📍 Elev8 Athletics</p>
+      <p><strong>Coach:</strong> Lewis Potts</p>
+    </div>
+
+    <!-- Workout Details Card (collapsible + copy) -->
+    <div class="workout-detail" id="workoutDetail">
+      <div class="workout-title-row">
+        <h2>Today's Workout</h2>
+        <div class="title-actions">
+          <button
+            class="toggle-btn"
+            id="toggleWorkoutBtn"
+            aria-expanded="false"
+            aria-controls="workoutTextWrapper"
+          >
+            Show workout
+          </button>
+          <button
+            class="copy-btn"
+            id="copyWorkoutBtn"
+            aria-label="Copy workout"
+          >
+            Copy
+          </button>
+        </div>
+      </div>
+      <div id="workoutTextWrapper" class="collapsible">
+        <div id="workoutText">
+          <p><strong>Warm-up</strong></p>
+          <ul>
+            <li>5–7 min mixed cardio + shoulder prep</li>
+            <li>
+              2 rounds: 10 band pull-aparts, 10 scap push-ups, 10 PVC
+              pass-throughs
+            </li>
+          </ul>
+          <p><strong>Strength – Push</strong></p>
+          <p><strong>Strength – Lower Body</strong></p>
+          <ul>
+            <li>Squats</li>
+            <li>Deadlifts</li>
+            <li>Split Squats</li>
+            <li>Lunges</li>
+            <li>Step-Ups</li>
+            <li>Calves</li>
+          </ul>
+
+          <p><strong>Run</strong></p>
+          <ul>
+            <li>Easy run @ 4:50–5:15/km (Zone 2)</li>
+          </ul>
+
+          <p><strong>Notes</strong></p>
+          <ul>
+            <li>Keep this session smooth — focus on form and recovery.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Class Workout -->
+    <div class="class-card">
+      <h3>LOWER STRENGTH + EASY RUN</h3>
+      <div class="class-info">
+        <span>⏱ 1 hour</span>
+        <span>📊 Advanced</span>
+        <span>💪 Sets & Reps</span>
+      </div>
+    <button class="start-btn" id="toggleBtn">
+              ▶ Let's get started!
+            </button>
+    </div>
+
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Workout Dropdown</title>
+         <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .workout-card {
+      border: 2px solid #e6c200;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 15px;
+      background: #000;
+    }
+
+    .card-header h3 {
+      color: #e6c200;
+      margin: 0;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 15px;
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+
+    .start-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      background: #e6c200;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Dropdown details */
+    .card-dropdown {
+      max-height: 0;
+      overflow: hidden;
+      background: #1a1a1a;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      padding: 0 15px;
+    }
+
+    .card-dropdown.open {
+      max-height: 1000px; /* big enough for content */
+      padding: 15px;
+    }
+
+    .timer {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 10px 0;
+      color: #e6c200;
+      text-align: center;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin: 10px 0;
+    }
+
+    .controls button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .pause { background: #222; color: #fff; }
+    .reset { background: #333; color: #fff; }
+    .cancel { background: #a00; color: #fff; }
+
+    .conditioning {
+      margin: 15px 0;
+      padding: 10px;
+      background: #2a2a2a;
+      border-radius: 8px;
+    }
+
+    .finish-box {
+      margin-top: 15px;
+      background: #093;
+      color: #fff;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .finish-btn {
+      margin-top: 10px;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 6px;
+      background: #0c0;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+
+
+    <!-- Dropdown hidden by default -->
+    <div class="card-dropdown" id="dropdownContent">
+      <h4>Workout Details</h4>
+      <p><strong>Strength Focus:</strong> Lower Body & Conditioning</p>
+      <p><strong>Duration:</strong> 60 mins</p>
+
+      <!-- Timer -->
+      <div class="timer" id="timerDisplay">00:00</div>
+
+      <div class="controls">
+        <button class="pause" id="pauseBtn">Pause</button>
+        <button class="reset" id="resetBtn">Reset</button>
+        <button class="cancel" id="cancelBtn">Cancel</button>
+      </div>
+
+      <div class="conditioning">
+        <h4>Conditioning Block</h4>
+        <p>4 x 12' EMOM</p>
+        <ul>
+          <li>8 x BB Push Press</li>
+          <li>8 x DB Row</li>
+          <li>12 x Hanging Leg Raise</li>
+          <li>Rest</li>
+        </ul>
+      </div>
+
+      <div class="finish-box">
+        <h4>Mark Workout Complete! 💪</h4>
+        <button class="finish-btn">Finish Workout</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const toggleBtn = document.getElementById("toggleBtn");
+    const dropdown = document.getElementById("dropdownContent");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const pauseBtn = document.getElementById("pauseBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const timerDisplay = document.getElementById("timerDisplay");
+
+    let timer;
+    let seconds = 0;
+    let isRunning = false;
+
+    function updateTimer() {
+      let mins = Math.floor(seconds / 60);
+      let secs = seconds % 60;
+      timerDisplay.textContent =
+        String(mins).padStart(2, "0") + ":" + String(secs).padStart(2, "0");
+    }
+
+    function startTimer() {
+      if (!isRunning) {
+        isRunning = true;
+        timer = setInterval(() => {
+          seconds++;
+          updateTimer();
+        }, 1000);
+      }
+    }
+
+    function pauseTimer() {
+      clearInterval(timer);
+      isRunning = false;
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      seconds = 0;
+      updateTimer();
+      isRunning = false;
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      dropdown.classList.toggle("open");
+      if (dropdown.classList.contains("open")) {
+        toggleBtn.textContent = "⬆ Hide Workout";
+        startTimer();
+      } else {
+        toggleBtn.textContent = "▶ Let's get started!";
+        pauseTimer();
+      }
+    });
+
+    cancelBtn.addEventListener("click", () => {
+      dropdown.classList.remove("open");
+      toggleBtn.textContent = "▶ Let's get started!";
+      resetTimer();
+    });
+
+    pauseBtn.addEventListener("click", () => {
+      if (isRunning) {
+        pauseTimer();
+        pauseBtn.textContent = "Resume";
+      } else {
+        startTimer();
+        pauseBtn.textContent = "Pause";
+      }
+    });
+
+    resetBtn.addEventListener("click", resetTimer);
+
+    // initialize
+    updateTimer();
+  </script>
+    </html>
+  </body>
+</html>

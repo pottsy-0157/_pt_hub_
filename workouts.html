@@ -121,58 +121,107 @@
     <br />
     <br />
 
-  <style>
-body { background: #111; color: #fff; font-family: Arial; padding: 1rem; }
-h2 { margin: 1.5rem 1rem 0.5rem; font-size: 1.2rem; text-transform: uppercase; }
-.session-card { background: #222; padding: 1rem; margin: 0.5rem 1rem; border-radius: 12px; cursor: pointer; transition: background 0.2s; }
-.session-card:hover { background: #333; }
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;  /* this aligns h3 and span vertically */
-}
+    <div id="workoutsContainer"></div>
 
-.session-card h3 { margin: 0; font-size: 1rem; text-transform: uppercase; }
-.session-card .spaces { font-weight: bold; color: gold; font-size: 0.9rem; text-transform: uppercase; }
-</style>
-</head>
-<body>
+    <script>
+      // Default workouts
+      const defaultWorkouts = [
+        {
+          day: "MONDAY",
+          name: "LOWER STRENGTH + EASY RUN",
+          time: "6:00 am – 7:00 am (UK)",
+          encouragement: "YOU GOT THIS!",
+        },
+        {
+          day: "TUESDAY",
+          name: "UPPER STRENGTH + SKI INTERVALS",
+          time: "6:00 am – 7:00 am (UK)",
+          encouragement: "YOU GOT THIS!",
+        },
+        {
+          day: "WEDNESDAY",
+          name: "ELEV8 RUN CLUB",
+          time: "6:00 pm – 7:00 pm (UK)",
+          encouragement: "YOU GOT THIS!",
+        },
+        {
+          day: "WEDNESDAY",
+          name: "CONDITIONING / ROW FOCUS",
+          time: "6:00 am – 7:00 am (UK)",
+          encouragement: "YOU GOT THIS!",
+        },
+        {
+          day: "THURSDAY",
+          name: "UPPER STRENGTH + SKI INTERVALS",
+          time: "6:00 am – 7:00 am (UK)",
+          encouragement: "YOU GOT THIS!",
+        },
+        {
+          day: "FRIDAY",
+          name: "UPPER STRENGTH + HYROX SIMULATION",
+          time: "6:00 am – 7:00 am (UK)",
+          encouragement: "YOU GOT THIS!",
+        },
+        {
+          day: "SATURDAY",
+          name: "HYROX SATURDAY",
+          time: "7:30 am – 8:30 am (UK)",
+          encouragement: "IT'S EASY!",
+        },
+        {
+          day: "SUNDAY",
+          name: "LONG RUN + CORE",
+          time: "6:00 am – 7:00 am (UK)",
+          encouragement: "KEEP IT UP!",
+        },
+      ];
 
+      // Load workouts from localStorage or use defaults
+      let workouts = JSON.parse(localStorage.getItem("workouts") || "null");
+      if (!workouts) {
+        workouts = defaultWorkouts;
+        localStorage.setItem("workouts", JSON.stringify(workouts));
+      }
 
+      const daysOrder = [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY",
+      ];
+      const container = document.getElementById("workoutsContainer");
 
-<div id="workoutsContainer"></div>
+      daysOrder.forEach((day) => {
+        const dayWorkouts = workouts.filter((w) => w.day === day);
+        if (dayWorkouts.length === 0) return;
 
-<script>
-// Get workouts
-const workouts = JSON.parse(localStorage.getItem('workouts') || '[]');
+        const h2 = document.createElement("h2");
+        h2.textContent = day;
+        container.appendChild(h2);
 
-// Days order
-const daysOrder = ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"];
+        dayWorkouts.forEach((w) => {
+          const div = document.createElement("div");
+          div.className = "session-card";
+          div.innerHTML = `
+        <div class="card-header">
+          <h3>${w.name}</h3>
+          <span class="spaces">${w.encouragement}</span>
+        </div>
+        <p><strong>${w.time}</strong></p>
+      `;
 
-// Render
-const container = document.getElementById('workoutsContainer');
-daysOrder.forEach(day => {
-    const dayWorkouts = workouts.filter(w => w.day === day);
-    if (dayWorkouts.length === 0) return;
-    const h2 = document.createElement('h2');
-    h2.textContent = day;
-    container.appendChild(h2);
-    dayWorkouts.forEach(w => {
-        const div = document.createElement('div');
-        div.className = 'session-card';
-        div.innerHTML = `
-            <div class="card-header">
-                <h3>${w.name}</h3>
-                <span class="spaces">${w.encouragement}</span>
-            </div>
-            <p><strong>${w.time}</strong></p>
-        `;
-        container.appendChild(div);
-    });
-});
-</script>
+          div.addEventListener("click", () => {
+            sessionStorage.setItem("selectedWorkout", JSON.stringify(w));
+            window.location.href = "session.html";
+          });
 
-
-
+          container.appendChild(div);
+        });
+      });
+    </script>
   </body>
 </html>
+

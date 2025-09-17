@@ -22,7 +22,7 @@
 
       <!-- Center logo + links -->
       <div class="nav-center">
-<a href="index.html" class="logo" id="logo">PT HUB</a>
+        <a href="index.html" class="logo">PT HUB</a>
         <ul class="nav-links" id="mobileNavLinks">
           <li><a href="vision.html">CLASSES</a></li>
           <li><a href="behind-brand.html">BEHIND THE BRAND</a></li>
@@ -37,9 +37,17 @@
     <br>
     <br>
     <br>
-    <br>
-    <br>
+   <br>
     
+<!-- Project Sub-18 Hero -->
+<section id="sub18" class="sub18">
+  <div class="sub18-inner">
+    <h2 id="glitch-text">Project Sub-18</h2>
+    <p>Training built for under-18 5km athletes. Strength, fitness, and confidence in a safe environment.</p>
+    <button onclick="location.href='sub-18.html'">Learn More</button>
+  </div>
+</section>
+
 
 
       <!-- Demo content -->
@@ -243,7 +251,7 @@
   document.addEventListener("keydown", function(e) {
     if (e.shiftKey && e.key === "A") {
       let password = prompt("Enter admin password:");
-      if (password === "123456789") { // change password here
+      if (password === "123") { // change password here
         window.location.href = "admin.html";
       } else if (password) {
         alert("Wrong password!");
@@ -251,34 +259,24 @@
     }
   });
 
-    const logo = document.getElementById("logo");
 
-let tapCount = 0;
-let tapTimer;
+  const logo = document.getElementById("logo"); // or any element
+let pressTimer;
 
-logo.addEventListener("click", (e) => {
-  e.preventDefault(); // stop link from instantly reloading
+logo.addEventListener("touchstart", () => {
+  pressTimer = setTimeout(() => {
+    window.location.href = "admin.html";
+  }, 4000); // 4 seconds
+});
 
-  tapCount++;
-
-  if (tapCount === 3) {
-    tapCount = 0;
-    clearTimeout(tapTimer);
-    window.location.href = "admin.html"; // triple tap → admin
-  } else {
-    clearTimeout(tapTimer);
-    tapTimer = setTimeout(() => {
-      if (tapCount === 1) {
-        window.location.href = "index.html"; // single tap → home
-      }
-      tapCount = 0;
-    }, 300); // max gap allowed between taps
-  }
+logo.addEventListener("touchend", () => {
+  clearTimeout(pressTimer);S
 });
 
 </script>
   </script>
 
-  </body>
 
+
+  </body>
 </html>

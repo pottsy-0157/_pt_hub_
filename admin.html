@@ -39,14 +39,6 @@
         font-size: 0.9rem;
       }
     </style>
-  </head>
-  <body>
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      
         <style>
           body {
             font-family: Arial;
@@ -103,117 +95,149 @@
             cursor: pointer;
           }
         </style>
-      </head>
-      <body>
-      <style>
-body { font-family: Arial; background: #111; color: #fff; padding: 1rem; }
-input, select, button { margin: 0.3rem 0; padding: 0.5rem; border-radius: 5px; border: none; }
-button { cursor: pointer; background: gold; color: #111; font-weight: bold; }
-.session-card {
-  background: #222;
-  padding: 1rem;
-  margin: 0.5rem 1rem;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background 0.2s;
+      
+        <style>
+          body {
+            font-family: Arial;
+            background: #111;
+            color: #fff;
+            padding: 1rem;
+          }
+          input,
+          select,
+          button {
+            margin: 0.3rem 0;
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: none;
+          }
+          button {
+            cursor: pointer;
+            background: gold;
+            color: #111;
+            font-weight: bold;
+          }
+          .session-card {
+            background: #222;
+            padding: 1rem;
+            margin: 0.5rem 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
 
-  display: flex;           /* make it flex container */
-  flex-direction: column;  /* stack content vertically */
-  justify-content: space-between; /* space out header & text */
-  min-height: 120px;       /* set a minimum height */
-}
-.session-card span { color: red; cursor: pointer; }
-</style>
-</head>
-<body>
+            display: flex; /* make it flex container */
+            flex-direction: column; /* stack content vertically */
+            justify-content: space-between; /* space out header & text */
+            min-height: 120px; /* set a minimum height */
+          }
+          .session-card span {
+            color: red;
+            cursor: pointer;
+          }
+        </style>
 
-<h1>ADMIN - ADD WORKOUT</h1>
+        <h1>ADMIN - ADD WORKOUT</h1>
 
-<label>Day:</label>
-<select id="day">
-  <option value="MONDAY">MONDAY</option>
-  <option value="TUESDAY">TUESDAY</option>
-  <option value="WEDNESDAY">WEDNESDAY</option>
-  <option value="THURSDAY">THURSDAY</option>
-  <option value="FRIDAY">FRIDAY</option>
-  <option value="SATURDAY">SATURDAY</option>
-  <option value="SUNDAY">SUNDAY</option>
-</select><br>
+        <label>Day:</label>
+        <select id="day">
+          <option value="MONDAY">MONDAY</option>
+          <option value="TUESDAY">TUESDAY</option>
+          <option value="WEDNESDAY">WEDNESDAY</option>
+          <option value="THURSDAY">THURSDAY</option>
+          <option value="FRIDAY">FRIDAY</option>
+          <option value="SATURDAY">SATURDAY</option>
+          <option value="SUNDAY">SUNDAY</option></select
+        ><br />
 
-<label>Workout Name:</label>
-<select id="name">
-  <option>LOWER STRENGTH + EASY RUN</option>
-  <option>UPPER STRENGTH + SKI INTERVALS</option>
-  <option>ELEV8 RUN CLUB</option>
-    <option>CONDITIONING / ROW FOCUS</option>
-    <option>UPPER STRENGTH + HYROX SIMULATION</option>
-    <option>HYROX SATURDAY</option>
-    <option>LONG RUN + CORE</option>
-</select><br>
+        <label>Workout Name:</label>
+        <select id="name">
+          <option>LOWER STRENGTH + EASY RUN</option>
+          <option>UPPER STRENGTH + SKI INTERVALS</option>
+          <option>ELEV8 RUN CLUB</option>
+          <option>CONDITIONING / ROW FOCUS</option>
+          <option>UPPER STRENGTH + HYROX SIMULATION</option>
+          <option>HYROX SATURDAY</option>
+          <option>LONG RUN + CORE</option></select
+        ><br />
 
-<label>Time:</label>
-<select id="time">
-  <option>6:00 am – 7:00 am (UK)</option>
-  <option>6:00 pm – 7:00 pm (UK)</option>
-  <option>7:30 am – 8:30 am (UK)</option>
-</select><br>
+        <label>Time:</label>
+        <select id="time">
+          <option>6:00 am – 7:00 am (UK)</option>
+          <option>6:00 pm – 7:00 pm (UK)</option>
+          <option>7:30 am – 8:30 am (UK)</option></select
+        ><br />
 
-<label>Encouragement:</label>
-<select id="encouragement">
-  <option>YOU GOT THIS!</option>
-  <option>KEEP IT UP!</option>
-  <option>IT'S EASY!</option>
-    <option>FEEL THE BURN!</option>
-    <option>NO PAIN NO GAIN!</option>
-    <option>CRUSH IT!</option>
-    <option>LETS GO!</option>
-</select><br>
+        <label>Encouragement:</label>
+        <select id="encouragement">
+          <option>YOU GOT THIS!</option>
+          <option>KEEP IT UP!</option>
+          <option>IT'S EASY!</option>
+          <option>FEEL THE BURN!</option>
+          <option>NO PAIN NO GAIN!</option>
+          <option>CRUSH IT!</option>
+          <option>LETS GO!</option></select
+        ><br />
 
-<button id="addBtn">Add Workout</button>
+        <label>Workout Details:</label>
+        <textarea
+          id="details"
+          rows="4"
+          placeholder="Optional detailed workout info (HTML allowed)"
+        ></textarea>
 
-<h2>Current Workouts</h2>
-<div id="workoutList"></div>
+        <button id="addBtn">Add Workout</button>
 
-<script>
-// Load workouts
-let workouts = JSON.parse(localStorage.getItem('workouts') || '[]');
+        <h2>Current Workouts</h2>
+        <div id="workoutList"></div>
 
-// Render function
-function renderWorkouts() {
-    const list = document.getElementById('workoutList');
-    list.innerHTML = '';
-    workouts.forEach((w, i) => {
-        const div = document.createElement('div');
-        div.className = 'session-card';
-        div.innerHTML = `<strong>${w.day}: ${w.name}</strong> <span onclick="removeWorkout(${i})">REMOVE</span>`;
-        list.appendChild(div);
-    });
-}
+        <script>
+          // Load workouts
+          let workouts = JSON.parse(localStorage.getItem("workouts") || "[]");
 
-// Add workout
-document.getElementById('addBtn').onclick = () => {
-    const day = document.getElementById('day').value;
-    const name = document.getElementById('name').value.toUpperCase();
-    const time = document.getElementById('time').value;
-    const encouragement = document.getElementById('encouragement').value;
-    if (!name) return alert('Enter a workout name');
-    workouts.push({day, name, time, encouragement});
-    localStorage.setItem('workouts', JSON.stringify(workouts));
-    renderWorkouts();
-};
+          // Render function
+          function renderWorkouts() {
+            const list = document.getElementById("workoutList");
+            list.innerHTML = "";
+            workouts.forEach((w, i) => {
+              const div = document.createElement("div");
+              div.className = "session-card";
+              div.innerHTML = `
+            <strong>${w.day}: ${w.name}</strong>
+            <span>${w.time}</span>
+            
+            <span onclick="removeWorkout(${i})" style="color:red; cursor:pointer;">REMOVE</span>
+        `;
+              list.appendChild(div);
+            });
+          }
 
-// Remove workout
-function removeWorkout(index) {
-    if (!confirm('Remove this workout?')) return;
-    workouts.splice(index, 1);
-    localStorage.setItem('workouts', JSON.stringify(workouts));
-    renderWorkouts();
-}
+          // Add workout
+          document.getElementById("addBtn").onclick = () => {
+            const day = document.getElementById("day").value;
+            const name = document.getElementById("name").value.toUpperCase();
+            const time = document.getElementById("time").value;
 
-// Initial render
-renderWorkouts();
-</script>
+            const details = document.getElementById("details").value; // new details
+            if (!name) return alert("Enter a workout name");
+            workouts.push({ day, name, time, details });
+            localStorage.setItem("workouts", JSON.stringify(workouts));
+            renderWorkouts();
+            document.getElementById("details").value = ""; // clear details textarea
+          };
 
+          // Remove workout
+          function removeWorkout(index) {
+            if (!confirm("Remove this workout?")) return;
+            workouts.splice(index, 1);
+            localStorage.setItem("workouts", JSON.stringify(workouts));
+            renderWorkouts();
+          }
+
+          // Initial render
+          renderWorkouts();
+
+
+        </script>
       </body>
     </html>
   </body>

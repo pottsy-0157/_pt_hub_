@@ -369,10 +369,7 @@ nav.scrolled .nav-icons i {
 }
 
 /* Thin content section to show scroll effect ---------------------------------------------------------------*/
-.content {
-  height: 1.5vh;
-  background: #222;
-}
+
 
 /* Split section and panels */
 .split-section {
@@ -428,13 +425,8 @@ nav.scrolled .nav-icons i {
 }
 
 /* Hero and content sections */
-.hero {
-  background: url("hero.jpg") center/cover no-repeat;
-}
-.content {
-  min-height: 10vh;
-  background: transparent;
-}
+
+
 footer {
   text-align: center;
   padding: 1rem 0;
@@ -1520,3 +1512,4 @@ input.small {
     text-shadow: 0 0 1px #fff;
   }
 }
+

@@ -50,9 +50,9 @@
 
     <div class="workout-detail">
       <div class="workout-title-row">
-        <h2>Today's Workout</h2>
+        <h2 id="workout-title">Today's Workout</h2>
         <div class="title-actions">
-          <button id="toggleWorkoutBtn">Show workout</button>
+          <button id="toggleWorkoutBtn">Show Workout</button>
           <button id="copyWorkoutBtn">Copy</button>
         </div>
       </div>
@@ -62,12 +62,12 @@
     </div>
 
     <script>
-      // Load the clicked workout from sessionStorage
+      // Load the clicked workout
       const workout = JSON.parse(
         sessionStorage.getItem("selectedWorkout") || "{}"
       );
 
-      // Fill in session info
+      // Fill session info
       document.getElementById("workout-title").textContent =
         workout.name || "No Workout Selected";
       document.getElementById("workout-day").textContent = workout.day || "";
@@ -81,8 +81,8 @@
         const isVisible = wrapper.style.display === "block";
         wrapper.style.display = isVisible ? "none" : "block";
         document.getElementById("toggleWorkoutBtn").textContent = isVisible
-          ? "Show workout"
-          : "Hide workout";
+          ? "Show Workout"
+          : "Hide Workout";
       };
 
       // Copy workout details

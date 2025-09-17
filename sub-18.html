@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Sub-18</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- your main CSS -->
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #111;
+        color: #fff;
+      }
+
+      .sub18-hero {
+        background: url("sub18-hero.jpg") center/cover no-repeat;
+        text-align: center;
+        padding: 6rem 2rem;
+        position: relative;
+        color: #fff;
+      }
+      .sub18-hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+      }
+      .sub18-hero-inner {
+        position: relative;
+        z-index: 1;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+      .sub18-hero-inner h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        animation: flicker-glitch 1.5s infinite;
+      }
+      .sub18-hero-inner p {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+      }
+
+      @keyframes flicker-glitch {
+        0%,
+        18%,
+        22%,
+        25%,
+        53%,
+        57%,
+        100% {
+          opacity: 1;
+          text-shadow: 0 0 2px #fff, 0 0 5px #fff;
+        }
+        20%,
+        24%,
+        55% {
+          opacity: 0.3;
+          text-shadow: none;
+        }
+        19%,
+        23%,
+        56% {
+          opacity: 0.6;
+          text-shadow: 0 0 1px #fff;
+        }
+      }
+
+      .sub18-content {
+        padding: 2rem 1rem;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .sub18-content h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #ffd700;
+      }
+
+      .sub18-content p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        color: #ddd;
+      }
+
+      .cta-btn {
+        display: inline-block;
+        background: #ffd700;
+        color: #111;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: transform 0.2s, background 0.3s;
+      }
+
+      .cta-btn:hover {
+        transform: scale(1.05);
+        background: #ffcf40;
+      }
+
+      /* Optional: Add some cards for benefits or programs */
+      .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .benefit-card {
+        background: #222;
+        padding: 1rem;
+        border-radius: 12px;
+        text-align: center;
+        transition: transform 0.2s, background 0.2s;
+      }
+      .benefit-card:hover {
+        transform: scale(1.03);
+        background: #333;
+      }
+      .benefit-card h3 {
+        margin: 0 0 0.5rem 0;
+        color: #ffd700;
+      }
+      .benefit-card p {
+        margin: 0;
+        font-size: 1rem;
+        color: #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section -->
+    <section class="sub18-hero">
+      <div class="sub18-hero-inner">
+        <h1>Project Sub-18</h1>
+        <p>
+          Training built for under-18 athletes. Strength, fitness, and
+          confidence in a safe environment.
+        </p>
+        <a href="#programs" class="cta-btn">See Programs</a>
+      </div>
+    </section>
+
+    <!-- Info Section -->
+    <section class="sub18-content" id="programs">
+      <h2>What is Project Sub-18?</h2>
+      <p>
+        This program is designed for young athletes who want to improve fitness
+        while having fun. Our coaches focus on safe training, teamwork, and
+        building resilience.
+      </p>
+
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <h3>Strength Training</h3>
+          <p>Safe exercises to improve strength without risk.</p>
+        </div>
+        <div class="benefit-card">
+          <h3>Teamwork & Confidence</h3>
+          <p>Fun group sessions that build confidence and collaboration.</p>
+        </div>
+        <div class="benefit-card">
+          <h3>Cardio & Fitness</h3>
+          <p>Endurance sessions tailored for youth athletes.</p>
+        </div>
+        <div class="benefit-card">
+          <h3>Progress Tracking</h3>
+          <p>Track improvements and stay motivated with goals.</p>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

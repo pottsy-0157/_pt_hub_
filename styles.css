@@ -1442,7 +1442,9 @@ input.small {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
 }
+
 .sub18-inner {
   position: relative;
   z-index: 1;
@@ -1510,3 +1512,4 @@ input.small {
     text-shadow: 0 0 1px #fff;
   }
 }
+

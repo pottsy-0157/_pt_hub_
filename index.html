@@ -260,23 +260,31 @@ document.addEventListener("keydown", function(e) {
   }
 });
 
-const logo = document.getElementById("logo");
-let pressTimer;
+ // MOBILE: Triple tap on logo to go straight to admin
+  const logo = document.getElementById("logo"); // make sure your logo has id="logo"
+  let tapCount = 0;
+  let tapTimer;
 
-if (logo) {
-  // Mobile
-  logo.addEventListener("touchstart", () => {
-    pressTimer = setTimeout(() => {
+  logo.addEventListener("touchend", () => {
+    tapCount++;
+    clearTimeout(tapTimer);
+
+    if (tapCount === 3) {
+      // Go straight to admin
       window.location.href = "admin.html";
-    }, 4000);
+      tapCount = 0;
+    } else {
+      // reset tap count if third tap doesn't happen within 1s
+      tapTimer = setTimeout(() => {
+        tapCount = 0;
+      }, 1000);
+    }
   });
-  logo.addEventListener("touchend", () => clearTimeout(pressTimer));
-}
-
 </script>
 
 </body>
 </html>
+
 
 
 

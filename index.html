@@ -265,27 +265,31 @@
   });
 
   // MOBILE: triple tap logo to enter (bypass password)
-  const logo = document.getElementById("logo"); // ensure this element exists
+ document.addEventListener("DOMContentLoaded", () => {
+  const logo = document.getElementById("logo");
   let tapCount = 0;
   let tapTimer;
 
-  logo.addEventListener("touchend", () => {
+  logo.addEventListener("touchend", (e) => {
+    e.preventDefault(); // STOP default link navigation
     tapCount++;
     clearTimeout(tapTimer);
 
     if (tapCount === 3) {
-      window.location.href = "admin.html"; // direct access
+      window.location.href = "admin.html"; // go to admin
       tapCount = 0;
     } else {
       tapTimer = setTimeout(() => {
-        tapCount = 0; // reset after 1.5s if no triple tap
+        tapCount = 0; // reset if no triple tap in 1.5s
       }, 1500);
     }
   });
+});
 </script>
 
 </body>
 </html>
+
 
 
 

@@ -249,19 +249,23 @@
   
   
 <script>
-document.addEventListener("keydown", function(e) {
-  if (e.shiftKey && e.key === "A") {
-    let password = prompt("Enter admin password:");
-    if (password === "123") {
-      window.location.href = "admin.html";
-    } else if (password) {
-      alert("Wrong password!");
-    }
-  }
-});
+ const password = "123"; // change this to your password
 
- // MOBILE: Triple tap on logo to go straight to admin
-  const logo = document.getElementById("logo"); // make sure your logo has id="logo"
+  // DESKTOP: prompt for password
+  document.addEventListener("keydown", function(e) {
+    if (e.shiftKey && e.key === "A") {
+      const entered = prompt("Enter admin password:");
+      if (entered !== password) {
+        alert("Access denied!");
+        window.location.href = "sessions.html"; // redirect back
+      } else {
+        window.location.href = "admin.html"; // correct password
+      }
+    }
+  });
+
+  // MOBILE: triple tap logo to enter (bypass password)
+  const logo = document.getElementById("logo"); // ensure this element exists
   let tapCount = 0;
   let tapTimer;
 
@@ -270,20 +274,19 @@ document.addEventListener("keydown", function(e) {
     clearTimeout(tapTimer);
 
     if (tapCount === 3) {
-      // Go straight to admin
-      window.location.href = "admin.html";
+      window.location.href = "admin.html"; // direct access
       tapCount = 0;
     } else {
-      // reset tap count if third tap doesn't happen within 1s
       tapTimer = setTimeout(() => {
-        tapCount = 0;
-      }, 1000);
+        tapCount = 0; // reset after 1.5s if no triple tap
+      }, 1500);
     }
   });
 </script>
 
 </body>
 </html>
+
 
 
 

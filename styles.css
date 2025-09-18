@@ -370,7 +370,6 @@ nav.scrolled .nav-icons i {
 
 /* Thin content section to show scroll effect ---------------------------------------------------------------*/
 
-
 /* Split section and panels */
 .split-section {
   display: grid;
@@ -425,7 +424,6 @@ nav.scrolled .nav-icons i {
 }
 
 /* Hero and content sections */
-
 
 footer {
   text-align: center;
@@ -1430,54 +1428,85 @@ input.small {
 
 /* Founder Profile Styles */
 
- body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: #fff;
-    }
-  .sub18-hero {
-      background: url("sub18-hero.jpg") center/cover no-repeat;
-      text-align: center;
-      padding: 6rem 2rem;
-      position: relative;
-      color: #fff;
-    }
-    .sub18-hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-    }
-    .sub18-hero-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 700px;
-      margin: 0 auto;
-    }
-    .sub18-hero-inner h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      text-transform: uppercase;
-      animation: flicker-glitch 1.5s infinite;
-    }
-    .sub18-hero-inner p {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      margin-bottom: 2rem;
-    }
+.sub18 {
+  background: url("sub18-hero.jpg") center/cover no-repeat;
+  color: #fff;
+  text-align: center;
+  padding: 6rem 2rem;
+  position: relative;
+  cursor: pointer; /* makes whole section feel clickable */
+  transition: transform 0.2s ease;
+}
+.sub18::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+.sub18-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.sub18-inner h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+.sub18-inner p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+.sub18-inner button {
+  background: #ffd700;
+  color: #111;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+.sub18-inner button:hover {
+  transform: scale(1.05);
+  background: #ffcf40;
+}
+.sub18:hover {
+  transform: scale(1.02);
+}
+#glitch-text {
+  font-size: 2.5rem; /* smaller */
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 1.5px; /* slightly tighter */
+  position: relative;
+  animation: flicker-glitch 1.5s infinite;
+}
 
-    @keyframes flicker-glitch {
-      0%, 18%, 22%, 25%, 53%, 57%, 100% {
-        opacity: 1;
-        text-shadow: 0 0 2px #fff, 0 0 5px #fff;
-      }
-      20%, 24%, 55% {
-        opacity: 0.3;
-        text-shadow: none;
-      }
-      19%, 23%, 56% {
-        opacity: 0.6;
-        text-shadow: 0 0 1px #fff;
-      }
-    }
+@keyframes flicker-glitch {
+  0%,
+  18%,
+  22%,
+  25%,
+  53%,
+  57%,
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 1px #fff, 0 0 3px #fff;
+  }
+  20%,
+  24%,
+  55% {
+    opacity: 0.3;
+    text-shadow: none;
+  }
+  19%,
+  23%,
+  56% {
+    opacity: 0.6;
+    text-shadow: 0 0 1px #fff;
+  }
+}

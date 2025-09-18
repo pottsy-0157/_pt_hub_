@@ -249,35 +249,35 @@
   
   
 <script>
-  document.addEventListener("keydown", function(e) {
-    if (e.shiftKey && e.key === "A") {
-      let password = prompt("Enter admin password:");
-      if (password === "123") { // change password here
-        window.location.href = "admin.html";
-      } else if (password) {
-        alert("Wrong password!");
-      }
+document.addEventListener("keydown", function(e) {
+  if (e.shiftKey && e.key === "A") {
+    let password = prompt("Enter admin password:");
+    if (password === "123") {
+      window.location.href = "admin.html";
+    } else if (password) {
+      alert("Wrong password!");
     }
-  });
+  }
+});
 
-
-const logo = document.getElementById("logo"); // or any element
+const logo = document.getElementById("logo");
 let pressTimer;
 
-logo.addEventListener("touchstart", () => {
-  pressTimer = setTimeout(() => {
-    window.location.href = "admin.html";
-  }, 4000); // 4 seconds
-});
-
-logo.addEventListener("touchend", () => {
-  clearTimeout(pressTimer);
-});
+if (logo) {
+  // Mobile
+  logo.addEventListener("touchstart", () => {
+    pressTimer = setTimeout(() => {
+      window.location.href = "admin.html";
+    }, 4000);
+  });
+  logo.addEventListener("touchend", () => clearTimeout(pressTimer));
+}
 
 </script>
 
 </body>
 </html>
+
 
 
 

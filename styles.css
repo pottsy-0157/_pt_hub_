@@ -1436,8 +1436,7 @@ input.small {
       background: #111;
       color: #fff;
     }
-
-    .sub18-hero {
+  .sub18-hero {
       background: url("sub18-hero.jpg") center/cover no-repeat;
       text-align: center;
       padding: 6rem 2rem;
@@ -1481,68 +1480,4 @@ input.small {
         opacity: 0.6;
         text-shadow: 0 0 1px #fff;
       }
-    }
-
-    .sub18-content {
-      padding: 2rem 1rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .sub18-content h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: #ffd700;
-    }
-
-    .sub18-content p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-      color: #ddd;
-    }
-
-    .cta-btn {
-      display: inline-block;
-      background: #ffd700;
-      color: #111;
-      padding: 1rem 2rem;
-      border-radius: 8px;
-      font-weight: bold;
-      text-decoration: none;
-      transition: transform 0.2s, background 0.3s;
-    }
-
-    .cta-btn:hover {
-      transform: scale(1.05);
-      background: #ffcf40;
-    }
-
-    /* Optional: Add some cards for benefits or programs */
-    .benefits-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-
-    .benefit-card {
-      background: #222;
-      padding: 1rem;
-      border-radius: 12px;
-      text-align: center;
-      transition: transform 0.2s, background 0.2s;
-    }
-    .benefit-card:hover {
-      transform: scale(1.03);
-      background: #333;
-    }
-    .benefit-card h3 {
-      margin: 0 0 0.5rem 0;
-      color: #ffd700;
-    }
-    .benefit-card p {
-      margin: 0;
-      font-size: 1rem;
-      color: #ccc;
     }

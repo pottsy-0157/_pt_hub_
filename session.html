@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Workout Session</title>
+    <title>Smart Workout Session</title>
     <style>
       body {
         background: #111;
@@ -11,34 +11,178 @@
         font-family: Arial, sans-serif;
         padding: 1rem;
       }
+
+      /* Cards / Sections */
+      .card,
       .session-detail,
-      .workout-detail {
-        background: #222;
-        padding: 1rem;
-        border-radius: 12px;
-        margin-bottom: 1rem;
+      .workout-detail,
+      .log-card {
+        background: #000;
+        padding: 1.5rem;
+        border-radius: 16px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+        border: 2px solid #ffd700;
       }
-      .card-header {
+
+      h2 {
+        margin-top: 0;
+        font-size: 1.5rem;
+        color: #ffd700;
+      }
+
+      label {
+        display: block;
+        margin: 0.5rem 0 0.3rem;
+        font-weight: bold;
+        color: #fff;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 10px;
+        border: none;
+        margin-bottom: 0.5rem;
+        background: #111;
+        color: #fff;
+        font-size: 0.95rem;
+      }
+
+      button {
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        color: #111;
+        cursor: pointer;
+        margin: 0.3rem 0.3rem 0.3rem 0;
+        font-weight: bold;
+        font-size: 0.9rem;
+        transition: 0.2s all;
+      }
+
+      /* Buttons */
+      button.add-set {
+        background: #ffd700;
+      }
+      button.add-set:hover {
+        background: #fff;
+      }
+
+      button.remove-set {
+        background: #fff;
+        color: #111;
+      }
+      button.remove-set:hover {
+        background: #ffd700;
+      }
+
+      button.finish {
+        background: #ffd700;
+      }
+      button.finish:hover {
+        background: #fff;
+      }
+
+      button.title-action {
+        background: #ffd700;
+        color: #111;
+      }
+      button.title-action:hover {
+        background: #fff;
+      }
+
+      /* Progress Bar */
+      .progress {
+        height: 8px;
+        border-radius: 8px;
+        background: #333;
+        margin-bottom: 1rem;
+        overflow: hidden;
+      }
+      .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: #ffd700;
+        transition: width 0.4s ease;
+      }
+
+      /* Log Section */
+      .exercise {
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #333;
+        padding-bottom: 1rem;
+      }
+      .set-row {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 0.3rem;
+      }
+      .set-row input {
+        flex: 1;
+      }
+      .set-row button {
+        flex: none;
+      }
+
+      .log-total {
+        font-size: 1rem;
+        margin: 0.5rem 0;
+        color: #ffd700;
+        font-weight: bold;
+      }
+
+      .log-list {
+        list-style: none;
+        padding-left: 0;
+        margin: 0.5rem 0 1rem;
+      }
+      .log-list li {
+        padding: 0.3rem 0;
+        border-bottom: 1px solid #333;
+        font-size: 0.95rem;
+      }
+
+      .suggestion-box {
+        background: #111;
+        padding: 0.8rem;
+        border-radius: 12px;
+        margin-top: 0.5rem;
+        font-size: 0.95rem;
+        color: #ffd700;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Workout Title Row */
+      .workout-title-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-      }
-      h2 {
-        margin: 0.5rem 0;
+        margin-bottom: 0.5rem;
       }
       .title-actions button {
         margin-left: 0.5rem;
-        padding: 0.3rem 0.6rem;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
       }
-      #workoutTextWrapper {
-        margin-top: 0.5rem;
+
+      /* Summary Card */
+      #summaryCard p {
+        margin: 0.5rem 0;
+        color: #fff;
+      }
+      #summaryCard ul {
+        list-style-type: disc;
+        margin-left: 1.5rem;
+        color: #ffd700;
       }
     </style>
   </head>
   <body>
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
     <div class="session-detail">
       <h2 id="workout-title">Workout Name</h2>
       <p>
@@ -50,10 +194,12 @@
 
     <div class="workout-detail">
       <div class="workout-title-row">
-        <h2 id="workout-title">Today's Workout</h2>
+        <h2>Today's Workout</h2>
         <div class="title-actions">
-          <button id="toggleWorkoutBtn">Show Workout</button>
-          <button id="copyWorkoutBtn">Copy</button>
+          <button class="title-action" id="toggleWorkoutBtn">
+            Show Workout
+          </button>
+          <button class="title-action" id="copyWorkoutBtn">Copy</button>
         </div>
       </div>
       <div id="workoutTextWrapper" style="display: none">
@@ -61,13 +207,32 @@
       </div>
     </div>
 
+    <div class="card log-card" id="logCard">
+      <h2>Log Your Workout</h2>
+      <div id="logEntries"></div>
+      <div class="log-total">
+        Total Weight: <span id="totalWeight">0</span> kg
+      </div>
+      <ul class="log-list" id="logList"></ul>
+      <div class="suggestion-box" id="suggestion">
+        💡 Adjust weights for next session if desired.
+      </div>
+      <button class="finish" id="finishWorkoutBtn">Finish Workout</button>
+    </div>
+
+    <div class="card" id="summaryCard" style="display: none">
+      <h2>Smart Performance Summary</h2>
+      <div class="summary" id="summary"></div>
+    </div>
+
     <script>
-      // Load the clicked workout
       const workout = JSON.parse(
         sessionStorage.getItem("selectedWorkout") || "{}"
       );
 
-      // Fill session info
+      const logEntriesDiv = document.getElementById("logEntries");
+
+      // Set workout info
       document.getElementById("workout-title").textContent =
         workout.name || "No Workout Selected";
       document.getElementById("workout-day").textContent = workout.day || "";
@@ -75,20 +240,151 @@
       document.getElementById("workoutText").innerHTML =
         workout.details || "<p>No details added</p>";
 
-      // Toggle workout details
+      // Toggle show/hide workout and generate exercises
       document.getElementById("toggleWorkoutBtn").onclick = () => {
-        const wrapper = document.getElementById("workoutTextWrapper");
-        const isVisible = wrapper.style.display === "block";
-        wrapper.style.display = isVisible ? "none" : "block";
-        document.getElementById("toggleWorkoutBtn").textContent = isVisible
+        const w = document.getElementById("workoutTextWrapper");
+        const visible = w.style.display === "block";
+        w.style.display = visible ? "none" : "block";
+        document.getElementById("toggleWorkoutBtn").textContent = visible
           ? "Show Workout"
           : "Hide Workout";
+
+        if (!visible) {
+          logEntriesDiv.innerHTML = "";
+          const exercises = workout.exercises || ["Exercise 1"];
+          exercises.forEach((ex) => {
+            const exDiv = document.createElement("div");
+            exDiv.className = "exercise";
+            exDiv.innerHTML = `<label>${ex}</label>`;
+            logEntriesDiv.appendChild(exDiv);
+            addSetRow(exDiv); // first row
+            const addBtn = document.createElement("button");
+            addBtn.textContent = "Add Set";
+            addBtn.className = "add-set";
+            addBtn.onclick = () => addSetRow(exDiv);
+            exDiv.appendChild(addBtn);
+          });
+        }
       };
 
-      // Copy workout details
+      // Copy workout text
       document.getElementById("copyWorkoutBtn").onclick = () => {
         navigator.clipboard.writeText(workout.details || "");
         alert("Workout copied!");
+      };
+
+      // Add a set row
+      function addSetRow(exDiv) {
+        const row = document.createElement("div");
+        row.className = "set-row";
+        row.innerHTML = `
+        <input type="number" placeholder="Sets" data-type="sets"/>
+        <input type="number" placeholder="Reps" data-type="reps"/>
+        <input type="number" placeholder="Weight (kg)" data-type="weight"/>
+        <button type="button" class="remove-set">X</button>
+      `;
+        row.querySelector("button").onclick = () => {
+          row.remove();
+          calculateTotals();
+        };
+        row
+          .querySelectorAll("input")
+          .forEach((input) => input.addEventListener("input", calculateTotals));
+        exDiv.insertBefore(row, exDiv.querySelector("button"));
+      }
+
+      const totalWeightEl = document.getElementById("totalWeight");
+      const logList = document.getElementById("logList");
+
+      function calculateTotals() {
+        let total = 0;
+        logList.innerHTML = "";
+        document.querySelectorAll(".set-row").forEach((row) => {
+          const sets = +row.querySelector('[data-type="sets"]').value || 0;
+          const reps = +row.querySelector('[data-type="reps"]').value || 0;
+          const weight = +row.querySelector('[data-type="weight"]').value || 0;
+          const lifted = sets * reps * weight;
+          total += lifted;
+          if (lifted > 0) {
+            const li = document.createElement("li");
+            li.textContent = `${
+              row.parentElement.querySelector("label").textContent
+            }: ${sets}x${reps} @ ${weight}kg → ${lifted}kg`;
+            logList.appendChild(li);
+          }
+        });
+        totalWeightEl.textContent = total;
+        return total;
+      }
+
+      // Finish workout
+      document.getElementById("finishWorkoutBtn").onclick = () => {
+        const total = calculateTotals();
+        if (total === 0) {
+          alert("Please log at least one set.");
+          return;
+        }
+
+        const rating = prompt("Rate your workout 1-10:");
+        const niggle = prompt("Any niggles or discomfort?");
+        const workoutLog = {
+          date: new Date().toLocaleDateString(),
+          workoutName: workout.name || "Unnamed Workout",
+          entries: [],
+          total,
+          rating: rating || "N/A",
+          niggle: niggle || "None",
+        };
+
+        document.querySelectorAll(".set-row").forEach((row) => {
+          workoutLog.entries.push({
+            exercise: row.parentElement.querySelector("label").textContent,
+            sets: +row.querySelector('[data-type="sets"]').value || 0,
+            reps: +row.querySelector('[data-type="reps"]').value || 0,
+            weight: +row.querySelector('[data-type="weight"]').value || 0,
+            lifted:
+              (+row.querySelector('[data-type="sets"]').value || 0) *
+              (+row.querySelector('[data-type="reps"]').value || 0) *
+              (+row.querySelector('[data-type="weight"]').value || 0),
+          });
+        });
+
+        const history = JSON.parse(
+          localStorage.getItem("workoutHistory") || "[]"
+        );
+        history.push(workoutLog);
+        localStorage.setItem("workoutHistory", JSON.stringify(history));
+
+        const suggestionList = [];
+        if (workoutLog.total > 10000)
+          suggestionList.push("🔥 Huge session! Focus on protein + sleep.");
+        else if (workoutLog.total < 2000)
+          suggestionList.push("Light session. Push harder next time.");
+        else suggestionList.push("Solid work — steady progress.");
+
+        if (workoutLog.rating <= 4)
+          suggestionList.push("Low energy. Consider recovery or mobility.");
+        else if (workoutLog.rating >= 8)
+          suggestionList.push(
+            "High energy! Consider small progression next session."
+          );
+
+        if (/shoulder|knee|back/i.test(workoutLog.niggle))
+          suggestionList.push(
+            "⚠️ Niggle reported. Avoid heavy loading and try mobility."
+          );
+
+        document.getElementById("logCard").style.display = "none";
+        const summary = document.getElementById("summary");
+        summary.innerHTML = `<p><strong>Date:</strong> ${workoutLog.date}</p>
+        <p><strong>Total Volume:</strong> ${workoutLog.total} kg</p>
+        <p><strong>Rating:</strong> ${workoutLog.rating}/10</p>
+        <p><strong>Niggle:</strong> ${workoutLog.niggle}</p>
+        <hr>
+        <p><strong>Smart Suggestions:</strong></p>
+        <ul>${suggestionList.map((s) => `<li>${s}</li>`).join("")}</ul>`;
+        document.getElementById("summaryCard").style.display = "block";
+        document.getElementById("progressBar").style.width = "100%";
       };
     </script>
   </body>

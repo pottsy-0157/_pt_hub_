@@ -1431,98 +1431,121 @@ input.small {
 /* Founder Profile Styles */
 
 /* Hero */
-.sub18-hero {
-  background: url("sub18-hero.jpg") center/cover no-repeat;
-  color: #fff;
-  text-align: center;
-  padding: 6rem 2rem;
-  position: relative;
-}
-.sub18-hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-}
-.sub18-inner {
-  position: relative;
-  z-index: 1;
-}
-#glitch-text {
-  font-size: 2.2rem;
-  font-weight: bold;
-  color: #fff;
-  animation: flicker-glitch 1.5s infinite;
-}
-@keyframes flicker-glitch {
-  0%,18%,22%,25%,53%,57%,100% {
-    opacity: 1;
-    text-shadow: 0 0 1px #fff, 0 0 3px #fff;
-  }
-  20%,24%,55% { opacity: 0.3; text-shadow: none; }
-  19%,23%,56% { opacity: 0.6; text-shadow: 0 0 1px #fff; }
-}
+ body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+    }
 
-/* Sections */
-section {
-  padding: 4rem 2rem;
-  text-align: center;
-  color: #fff;
-  background: #111;
-}
-section:nth-child(even) {
-  background: #181818;
-}
-h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-  color: #ffd700;
-}
-p {
-  max-width: 700px;
-  margin: 0 auto;
-  font-size: 1rem;
-  line-height: 1.6;
-}
+    .sub18-hero {
+      background: url("sub18-hero.jpg") center/cover no-repeat;
+      text-align: center;
+      padding: 6rem 2rem;
+      position: relative;
+      color: #fff;
+    }
+    .sub18-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+    }
+    .sub18-hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .sub18-hero-inner h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      animation: flicker-glitch 1.5s infinite;
+    }
+    .sub18-hero-inner p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
 
-/* Training Grid */
-.training-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-.training-card {
-  background: #222;
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-  font-weight: bold;
-}
-.training-card small {
-  display: block;
-  margin-top: 0.5rem;
-  font-weight: normal;
-  color: #bbb;
-}
+    @keyframes flicker-glitch {
+      0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 2px #fff, 0 0 5px #fff;
+      }
+      20%, 24%, 55% {
+        opacity: 0.3;
+        text-shadow: none;
+      }
+      19%, 23%, 56% {
+        opacity: 0.6;
+        text-shadow: 0 0 1px #fff;
+      }
+    }
 
-/* CTA */
-.sub18-cta .cta-btn {
-  display: inline-block;
-  margin: 1rem;
-  padding: 1rem 2rem;
-  background: #ffd700;
-  color: #111;
-  font-weight: bold;
-  border-radius: 8px;
-  text-decoration: none;
-  transition: transform 0.2s, background 0.3s;
-}
-.sub18-cta .cta-btn:hover {
-  transform: scale(1.05);
-  background: #ffcf40;
-}
+    .sub18-content {
+      padding: 2rem 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
 
+    .sub18-content h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #ffd700;
+    }
 
+    .sub18-content p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      color: #ddd;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: #ffd700;
+      color: #111;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    .cta-btn:hover {
+      transform: scale(1.05);
+      background: #ffcf40;
+    }
+
+    /* Optional: Add some cards for benefits or programs */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .benefit-card {
+      background: #222;
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: center;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .benefit-card:hover {
+      transform: scale(1.03);
+      background: #333;
+    }
+    .benefit-card h3 {
+      margin: 0 0 0.5rem 0;
+      color: #ffd700;
+    }
+    .benefit-card p {
+      margin: 0;
+      font-size: 1rem;
+      color: #ccc;
+    }
 
 

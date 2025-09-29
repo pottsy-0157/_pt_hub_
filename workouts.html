@@ -192,34 +192,50 @@
         "SATURDAY",
         "SUNDAY",
       ];
-      const container = document.getElementById("workoutsContainer");
 
+      const container = document.getElementById("workoutsContainer");
+      container.innerHTML = "";
+
+      // Group workouts by day in the correct order
       daysOrder.forEach((day) => {
         const dayWorkouts = workouts.filter((w) => w.day === day);
-        if (dayWorkouts.length === 0) return;
 
-        const h2 = document.createElement("h2");
-        h2.textContent = day;
-        container.appendChild(h2);
+        if (dayWorkouts.length > 0) {
+          // Add day header
+          const dayHeader = document.createElement("h2");
+          dayHeader.textContent = day;
+          container.appendChild(dayHeader);
 
-        dayWorkouts.forEach((w) => {
-          const div = document.createElement("div");
-          div.className = "session-card";
-          div.innerHTML = `
-        <div class="card-header">
-          <h3>${w.name}</h3>
-          <span class="spaces">${w.encouragement}</span>
-        </div>
-        <p><strong>${w.time}</strong></p>
-      `;
+          // Add workouts for this day
+          dayWorkouts.forEach((w) => {
+            const div = document.createElement("div");
+            div.className = "session-card";
+            div.innerHTML = `
+          <div class="card-header">
+            <h3>${w.name}</h3>
+            <span class="spaces">${w.encouragement || ""}</span>
+          </div>
+          <p><strong>${w.time}</strong></p>
+        `;
 
-          div.addEventListener("click", () => {
-            sessionStorage.setItem("selectedWorkout", JSON.stringify(w));
-            window.location.href = "session.html";
+            // Save workout to sessionStorage when clicked
+            div.addEventListener("click", () => {
+              sessionStorage.setItem(
+                "selectedWorkout",
+                JSON.stringify({
+                  day: w.day,
+                  name: w.name,
+                  time: w.time,
+                  encouragement: w.encouragement,
+                  details: w.details || "", // ✅ carry forward workout details
+                })
+              );
+              window.location.href = "session.html";
+            });
+
+            container.appendChild(div);
           });
-
-          container.appendChild(div);
-        });
+        }
       });
     </script>
   </body>

@@ -179,257 +179,535 @@
     </style>
   </head>
   <body>
-    <div class="progress">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Smart Workout Session</title>
+        <style>
+          body {
+            background: #111;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            padding: 1rem;
+          }
 
-    <div class="session-detail">
-      <h2 id="workout-title">Workout Name</h2>
-      <p>
-        📅 <span id="workout-day"></span> | 🕕 <span id="workout-time"></span>
-      </p>
-      <p>📍 Elev8 Athletics</p>
-      <p><strong>Coach:</strong> Lewis Potts</p>
-    </div>
+          .card,
+          .session-detail,
+          .workout-detail,
+          .log-card {
+            background: #000;
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+            border: 2px solid #ffd700;
+          }
 
-    <div class="workout-detail">
-      <div
-        style="
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 0.5rem;
-        "
-      >
-        <h2>Today's Workout</h2>
-        <div>
-          <button class="title-action" id="toggleWorkoutBtn">
-            Show Workout
-          </button>
-          <button class="title-action" id="copyWorkoutBtn">Copy</button>
+          h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            color: #ffd700;
+          }
+
+          label {
+            display: block;
+            margin: 0.5rem 0 0.3rem;
+            font-weight: bold;
+            color: #fff;
+          }
+
+          input,
+          textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 10px;
+            border: none;
+            margin-bottom: 0.5rem;
+            background: #111;
+            color: #fff;
+            font-size: 0.95rem;
+          }
+
+          button {
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            color: #111;
+            cursor: pointer;
+            margin: 0.3rem 0.3rem 0.3rem 0;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: 0.2s all;
+          }
+
+          button.add-set {
+            background: #ffd700;
+          }
+          button.add-set:hover {
+            background: #fff;
+          }
+
+          button.finish {
+            background: #ffd700;
+          }
+          button.finish:hover {
+            background: #fff;
+          }
+
+          button.title-action {
+            background: #ffd700;
+            color: #111;
+          }
+          button.title-action:hover {
+            background: #fff;
+          }
+
+          .progress {
+            height: 8px;
+            border-radius: 8px;
+            background: #333;
+            margin-bottom: 1rem;
+            overflow: hidden;
+          }
+          .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #ffd700;
+            transition: width 0.4s ease;
+          }
+
+          .exercise {
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 1rem;
+          }
+
+          .log-total {
+            font-size: 1rem;
+            margin: 0.5rem 0;
+            color: #ffd700;
+            font-weight: bold;
+          }
+
+          .log-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0.5rem 0 1rem;
+          }
+          .log-list li {
+            padding: 0.3rem 0;
+            border-bottom: 1px solid #333;
+            font-size: 0.95rem;
+          }
+
+          .suggestion-box {
+            background: #111;
+            padding: 0.8rem;
+            border-radius: 12px;
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+            color: #ffd700;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+          }
+
+          #summaryCard p {
+            margin: 0.5rem 0;
+            color: #fff;
+          }
+          #summaryCard ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            color: #ffd700;
+          }
+
+          .coach-msg {
+            margin: 0.3rem 0;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="progress">
+          <div class="progress-bar" id="progressBar"></div>
         </div>
-      </div>
-      <div id="workoutTextWrapper" style="display: none">
-        <div id="workoutText"></div>
-      </div>
-    </div>
 
-    <div class="card log-card" id="logCard" style="display: none">
-      <h2>Log Your Workout</h2>
-      <div id="logContainer"></div>
-      <div class="log-total">
-        Total Weight: <span id="totalWeight">0</span> kg
-      </div>
-      <ul class="log-list" id="logList"></ul>
-      <div class="suggestion-box">
-        💡 Adjust weights for next session if desired.
-      </div>
-      <button class="finish" id="finishWorkoutBtn">Finish Workout</button>
-    </div>
+        <div class="session-detail">
+          <h2 id="workout-title">Workout Name</h2>
+          <p>
+            📅 <span id="workout-day"></span> | 🕕
+            <span id="workout-time"></span>
+          </p>
+          <p>📍 Elev8 Athletics</p>
+          <p><strong>Coach:</strong> Lewis Potts</p>
+        </div>
 
-    <div class="card" id="summaryCard" style="display: none">
-      <h2>Smart Performance Summary</h2>
-      <div class="summary" id="summary"></div>
-    </div>
+        <div class="workout-detail">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 0.5rem;
+            "
+          >
+            <h2>Today's Workout</h2>
+            <div>
+              <button class="title-action" id="toggleWorkoutBtn">
+                Show Workout
+              </button>
+              <button class="title-action" id="copyWorkoutBtn">Copy</button>
+            </div>
+          </div>
+          <div id="workoutTextWrapper" style="display: none">
+            <div id="workoutText"></div>
+          </div>
+        </div>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const workout = JSON.parse(
-          sessionStorage.getItem("selectedWorkout") || "{}"
-        );
+        <div class="card log-card" id="logCard" style="display: none">
+          <h2>Log Your Workout</h2>
+          <div id="logContainer"></div>
+          <div class="log-total">
+            Total Weight: <span id="totalWeight">0</span> kg
+          </div>
+          <ul class="log-list" id="logList"></ul>
+          <div class="suggestion-box">
+            💡 Adjust weights for next session if desired.
+          </div>
+          <button class="finish" id="finishWorkoutBtn">Finish Workout</button>
+        </div>
 
-        // Fill header info
-        document.getElementById("workout-title").textContent =
-          workout.name || "No Workout Selected";
-        document.getElementById("workout-day").textContent = workout.day || "";
-        document.getElementById("workout-time").textContent =
-          workout.time || "";
+        <div class="card" id="summaryCard" style="display: none">
+          <h2>Smart Performance Summary</h2>
+          <div class="summary" id="summary"></div>
+        </div>
 
-        const logCard = document.getElementById("logCard");
-        const logContainer = document.getElementById("logContainer");
-        const totalWeightEl = document.getElementById("totalWeight");
-        const logList = document.getElementById("logList");
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const workout = JSON.parse(
+              sessionStorage.getItem("selectedWorkout") || "{}"
+            );
+            const logCard = document.getElementById("logCard");
+            const logContainer = document.getElementById("logContainer");
+            const totalWeightEl = document.getElementById("totalWeight");
+            const logList = document.getElementById("logList");
 
-        const todaysWorkout = workout.details
-          ? workout.details
-              .split("\n")
-              .map((l) => l.trim())
-              .filter((l) => l)
-          : ["No exercises found — add some in the admin page!"];
+            document.getElementById("workout-title").textContent =
+              workout.name || "No Workout Selected";
+            document.getElementById("workout-day").textContent =
+              workout.day || "";
+            document.getElementById("workout-time").textContent =
+              workout.time || "";
 
-        let currentExerciseIndex = 0;
+            const history = JSON.parse(
+              localStorage.getItem("workoutHistory") || "[]"
+            );
 
-        // Toggle workout display
-        document.getElementById("toggleWorkoutBtn").onclick = () => {
-          const w = document.getElementById("workoutTextWrapper");
-          const visible = w.style.display === "block";
-          w.style.display = visible ? "none" : "block";
-          logCard.style.display = visible ? "none" : "block";
-          document.getElementById("toggleWorkoutBtn").textContent = visible
-            ? "Show Workout"
-            : "Hide Workout";
+            // Get last workout for this session
+            const lastWorkout =
+              history.reverse().find((h) => h.workoutName === workout.name) ||
+              {};
 
-          if (!visible) {
-            logContainer.innerHTML = "";
-            currentExerciseIndex = 0;
-            showNextExercise();
-          }
-        };
+            const todaysWorkout = workout.details
+              ? workout.details
+                  .split("\n")
+                  .map((l) => l.trim())
+                  .filter((l) => l)
+              : ["No exercises found!"];
+            let currentExerciseIndex = 0;
 
-        // Copy workout
-        document.getElementById("copyWorkoutBtn").onclick = () => {
-          const revealed = Array.from(
-            logContainer.querySelectorAll("label")
-          ).map((l) => l.textContent);
-          if (revealed.length === 0) return alert("No exercises revealed yet!");
-          navigator.clipboard
-            .writeText(revealed.join("\n"))
-            .then(() => alert("Workout copied!"));
-        };
+            document.getElementById("toggleWorkoutBtn").onclick = () => {
+              const w = document.getElementById("workoutTextWrapper");
+              const visible = w.style.display === "block";
+              w.style.display = visible ? "none" : "block";
+              logCard.style.display = visible ? "none" : "block";
+              document.getElementById("toggleWorkoutBtn").textContent = visible
+                ? "Show Workout"
+                : "Hide Workout";
+              if (!visible) {
+                logContainer.innerHTML = "";
+                currentExerciseIndex = 0;
+                showNextExercise();
+              }
+            };
 
-        // Show one exercise at a time
-        function showNextExercise() {
-          if (currentExerciseIndex >= todaysWorkout.length) return;
+            document.getElementById("copyWorkoutBtn").onclick = () => {
+              const revealed = Array.from(
+                logContainer.querySelectorAll("label")
+              ).map((l) => l.textContent);
+              if (revealed.length === 0)
+                return alert("No exercises revealed yet!");
+              navigator.clipboard
+                .writeText(revealed.join("\n"))
+                .then(() => alert("Workout copied!"));
+            };
 
-          const exercise = todaysWorkout[currentExerciseIndex];
-          const exDiv = document.createElement("div");
-          exDiv.className = "exercise";
+            function createInput(type, placeholder, suggestionValue) {
+              const input = document.createElement("input");
+              input.type = type;
+              input.placeholder = placeholder;
+              input.value = "";
+              input.dataset.suggestion = suggestionValue;
+              input.dataset.clicked = "0"; // track clicks
+              input.style.color = "#fff";
 
-          const label = document.createElement("label");
-          label.textContent = exercise;
-          exDiv.appendChild(label);
+              input.addEventListener("click", () => {
+                if (input.dataset.clicked === "0" && input.dataset.suggestion) {
+                  input.value = suggestionValue;
+                  input.style.color = "#aaa"; // light gray
+                  input.dataset.clicked = "1";
+                } else if (input.dataset.clicked === "1") {
+                  input.style.color = "#fff"; // accept suggestion
+                  input.dataset.clicked = "2";
+                }
+              });
 
-          const setsInput = document.createElement("input");
-          setsInput.placeholder = "Sets";
-          setsInput.type = "number";
+              input.addEventListener("input", () => {
+                input.dataset.clicked = "2"; // manual edit
+                calculateTotals();
+              });
 
-          const repsInput = document.createElement("input");
-          repsInput.placeholder = "Reps";
-          repsInput.type = "number";
-
-          const weightInput = document.createElement("input");
-          weightInput.placeholder = "Weight (kg)";
-          weightInput.type = "number";
-
-          [setsInput, repsInput, weightInput].forEach((i) =>
-            i.addEventListener("input", calculateTotals)
-          );
-
-          exDiv.appendChild(setsInput);
-          exDiv.appendChild(repsInput);
-          exDiv.appendChild(weightInput);
-
-          const addSetBtn = document.createElement("button");
-          addSetBtn.textContent = "Add Next Exercise";
-          addSetBtn.className = "add-set";
-          addSetBtn.onclick = () => {
-            currentExerciseIndex++;
-            showNextExercise();
-            addSetBtn.remove();
-          };
-          exDiv.appendChild(addSetBtn);
-
-          logContainer.appendChild(exDiv);
-        }
-
-        // Calculate totals
-        function calculateTotals() {
-          let total = 0;
-          logList.innerHTML = "";
-          document.querySelectorAll(".exercise").forEach((exDiv) => {
-            const sets =
-              +exDiv.querySelector('input[placeholder="Sets"]').value || 0;
-            const reps =
-              +exDiv.querySelector('input[placeholder="Reps"]').value || 0;
-            const weight =
-              +exDiv.querySelector('input[placeholder="Weight (kg)"]').value ||
-              0;
-            const lifted = sets * reps * weight;
-            total += lifted;
-            if (lifted > 0) {
-              const li = document.createElement("li");
-              li.textContent = `${
-                exDiv.querySelector("label").textContent
-              }: ${sets}x${reps} @ ${weight}kg → ${lifted}kg`;
-              logList.appendChild(li);
+              return input;
             }
-          });
-          totalWeightEl.textContent = total;
-          return total; // 🔥 this line fixes it
-        }
 
-        // Finish workout button
-        document.getElementById("finishWorkoutBtn").onclick = () => {
-          const total = calculateTotals();
-          if (total === 0) {
-            alert("Please log at least one set.");
-            return;
+            function showNextExercise() {
+              if (currentExerciseIndex >= todaysWorkout.length) return;
+
+              const exercise = todaysWorkout[currentExerciseIndex];
+              const exDiv = document.createElement("div");
+              exDiv.className = "exercise";
+
+              const label = document.createElement("label");
+              label.textContent = exercise;
+              exDiv.appendChild(label);
+
+              // Last session data
+              const prevEntry = lastWorkout.entries
+                ? lastWorkout.entries.find((e) => e.exercise === exercise)
+                : {};
+              const aiSuggestion = {
+                sets: prevEntry?.sets || 3,
+                reps: prevEntry?.reps || 8,
+                weight: prevEntry?.weight
+                  ? Math.round(prevEntry.weight * 1.05)
+                  : 20,
+              };
+
+              const setsInput = createInput(
+                "number",
+                "Sets",
+                aiSuggestion.sets
+              );
+              const repsInput = createInput(
+                "number",
+                "Reps",
+                aiSuggestion.reps
+              );
+              const weightInput = createInput(
+                "number",
+                "Weight (kg)",
+                aiSuggestion.weight
+              );
+
+              exDiv.appendChild(setsInput);
+              exDiv.appendChild(repsInput);
+              exDiv.appendChild(weightInput);
+
+              const addSetBtn = document.createElement("button");
+              addSetBtn.textContent = "Add Next Exercise";
+              addSetBtn.className = "add-set";
+              addSetBtn.onclick = () => {
+                currentExerciseIndex++;
+                showNextExercise();
+                addSetBtn.remove();
+              };
+              exDiv.appendChild(addSetBtn);
+
+              logContainer.appendChild(exDiv);
+            }
+
+            function calculateTotals() {
+              let total = 0;
+              logList.innerHTML = "";
+              document.querySelectorAll(".exercise").forEach((exDiv) => {
+                const sets =
+                  +exDiv.querySelector('input[placeholder="Sets"]').value || 0;
+                const reps =
+                  +exDiv.querySelector('input[placeholder="Reps"]').value || 0;
+                const weight =
+                  +exDiv.querySelector('input[placeholder="Weight (kg)"]')
+                    .value || 0;
+                const lifted = sets * reps * weight;
+                total += lifted;
+                if (lifted > 0) {
+                  const li = document.createElement("li");
+                  li.textContent = `${
+                    exDiv.querySelector("label").textContent
+                  }: ${sets}x${reps} @ ${weight}kg → ${lifted}kg`;
+                  logList.appendChild(li);
+                }
+              });
+              totalWeightEl.textContent = total;
+              return total;
+            }
+
+            document.getElementById("finishWorkoutBtn").onclick = () => {
+              const total = calculateTotals();
+              if (total === 0) return alert("Please log at least one set.");
+
+              const rating = prompt("Rate your workout 1-10:") || "N/A";
+              const niggle = prompt("Any niggles or discomfort?") || "None";
+
+              const workoutLog = {
+                date: new Date().toLocaleDateString(),
+                workoutName: workout.name || "Unnamed Workout",
+                entries: [],
+                total,
+                rating,
+                niggle,
+              };
+
+              document.querySelectorAll(".exercise").forEach((exDiv) => {
+                workoutLog.entries.push({
+                  exercise: exDiv.querySelector("label").textContent,
+                  sets:
+                    +exDiv.querySelector('input[placeholder="Sets"]').value ||
+                    0,
+                  reps:
+                    +exDiv.querySelector('input[placeholder="Reps"]').value ||
+                    0,
+                  weight:
+                    +exDiv.querySelector('input[placeholder="Weight (kg)"]')
+                      .value || 0,
+                });
+              });
+
+              const history = JSON.parse(
+                localStorage.getItem("workoutHistory") || "[]"
+              );
+              history.push(workoutLog);
+              localStorage.setItem("workoutHistory", JSON.stringify(history));
+
+              // Feedback & AI progression suggestion
+              const feedback = [];
+              if (workoutLog.total > 10000)
+                feedback.push("🔥 Massive effort! Recovery is key tonight.");
+              else if (workoutLog.total < 2000)
+                feedback.push("Light session — next time push a bit more.");
+              else feedback.push("Solid, consistent work today 👊");
+
+              if (workoutLog.rating <= 4)
+                feedback.push(
+                  "You felt drained — plan an easier recovery day."
+                );
+              if (workoutLog.rating >= 8)
+                feedback.push(
+                  "Great energy! Add a small progression next time."
+                );
+              if (/shoulder|knee|back/i.test(workoutLog.niggle))
+                feedback.push(
+                  "⚠️ Take care of that niggle. Prioritize mobility + lighter loading."
+                );
+
+              logCard.style.display = "none";
+              document.getElementById("summary").innerHTML = `
+      <p><strong>Date:</strong> ${workoutLog.date}</p>
+      <p><strong>Total Volume:</strong> ${workoutLog.total} kg</p>
+      <p><strong>Rating:</strong> ${workoutLog.rating}/10</p>
+      <p><strong>Niggle:</strong> ${workoutLog.niggle}</p>
+      <hr>
+      <p><strong>AI Coach Says:</strong></p>
+      ${feedback.map((f) => `<div class="coach-msg">💬 ${f}</div>`).join("")}
+    `;
+              document.getElementById("summaryCard").style.display = "block";
+              document.getElementById("progressBar").style.width = "100%";
+            };
+          });
+
+          // ---- Chart Setup ----
+          const ctx = document.getElementById("progressChart").getContext("2d");
+          let progressChart;
+
+          function renderChart(type = "weights") {
+            const history = JSON.parse(
+              localStorage.getItem("workoutHistory") || "[]"
+            );
+
+            // Filter by workout type
+            const dataPoints = history
+              .filter((h) => {
+                if (type === "weights")
+                  return h.entries && h.entries.length > 0;
+                return h.workoutName.toLowerCase().includes(type);
+              })
+              .map((h) => {
+                if (type === "weights") {
+                  // Sum total weight
+                  return h.entries.reduce(
+                    (sum, e) => sum + e.sets * e.reps * e.weight,
+                    0
+                  );
+                } else {
+                  // For cardio: assume totalDistance or totalValue stored
+                  return h.total || 0;
+                }
+              });
+
+            const labels = history
+              .filter((h) => {
+                if (type === "weights")
+                  return h.entries && h.entries.length > 0;
+                return h.workoutName.toLowerCase().includes(type);
+              })
+              .map((h) => h.date);
+
+            if (progressChart) progressChart.destroy();
+
+            progressChart = new Chart(ctx, {
+              type: "line",
+              data: {
+                labels: labels,
+                datasets: [
+                  {
+                    label:
+                      type === "weights" ? "Total Volume (kg)" : "Performance",
+                    data: dataPoints,
+                    borderColor: "#ffd700",
+                    backgroundColor: "rgba(255, 215, 0, 0.2)",
+                    fill: true,
+                    tension: 0.3,
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: { display: true },
+                },
+                scales: {
+                  y: { beginAtZero: true },
+                },
+              },
+            });
           }
 
-          const rating = prompt("Rate your workout 1-10:") || "N/A";
-          const niggle = prompt("Any niggles or discomfort?") || "None";
-
-          const workoutLog = {
-            date: new Date().toLocaleDateString(),
-            workoutName: workout.name || "Unnamed Workout",
-            entries: [],
-            total,
-            rating,
-            niggle,
-          };
-
-          document.querySelectorAll(".exercise").forEach((exDiv) => {
-            workoutLog.entries.push({
-              exercise: exDiv.querySelector("label").textContent,
-              sets:
-                +exDiv.querySelector('input[placeholder="Sets"]').value || 0,
-              reps:
-                +exDiv.querySelector('input[placeholder="Reps"]').value || 0,
-              weight:
-                +exDiv.querySelector('input[placeholder="Weight (kg)"]')
-                  .value || 0,
+          // ---- Button Handlers ----
+          document.querySelectorAll(".tracker-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              document
+                .querySelectorAll(".tracker-btn")
+                .forEach((b) => b.classList.remove("active"));
+              btn.classList.add("active");
+              renderChart(btn.dataset.type);
             });
           });
 
-          const history = JSON.parse(
-            localStorage.getItem("workoutHistory") || "[]"
-          );
-          history.push(workoutLog);
-          localStorage.setItem("workoutHistory", JSON.stringify(history));
-
-          // AI feedback
-          const feedback = [];
-          if (workoutLog.total > 10000)
-            feedback.push("🔥 Massive effort! Recovery is key tonight.");
-          else if (workoutLog.total < 2000)
-            feedback.push("Light session — next time let’s push a bit more.");
-          else feedback.push("Solid, consistent work today 👊");
-
-          if (workoutLog.rating <= 4)
-            feedback.push("You felt drained — plan an easier recovery day.");
-          if (workoutLog.rating >= 8)
-            feedback.push("Great energy! Add a small progression next time.");
-          if (/shoulder|knee|back/i.test(workoutLog.niggle))
-            feedback.push(
-              "⚠️ Take care of that niggle. Prioritize mobility + lighter loading."
-            );
-
-          logCard.style.display = "none";
-          document.getElementById("summary").innerHTML = `
-            <p><strong>Date:</strong> ${workoutLog.date}</p>
-            <p><strong>Total Volume:</strong> ${workoutLog.total} kg</p>
-            <p><strong>Rating:</strong> ${workoutLog.rating}/10</p>
-            <p><strong>Niggle:</strong> ${workoutLog.niggle}</p>
-            <hr>
-            <p><strong>AI Coach Says:</strong></p>
-            ${feedback
-              .map((f) => `<div class="coach-msg">💬 ${f}</div>`)
-              .join("")}
-          `;
-          document.getElementById("summaryCard").style.display = "block";
-          document.getElementById("progressBar").style.width = "100%";
-        };
-      });
-    </script>
+          // Initial render
+          renderChart("weights");
+        </script>
+      </body>
+    </html>
   </body>
 </html>
+
+

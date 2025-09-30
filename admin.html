@@ -170,6 +170,55 @@
 
       // Initial render
       renderWorkouts();
+
+      // Save new workout
+      document.getElementById("addWorkoutBtn").onclick = () => {
+        const name = document.getElementById("name").value.trim();
+        const day = document.getElementById("day").value.trim();
+        const time = document.getElementById("time").value.trim();
+        let details = document.getElementById("details").value.trim();
+
+        if (!name || !day || !time || !details) {
+          alert("Please fill in all fields.");
+          return;
+        }
+
+        // 🧹 Auto-format details
+        // Split by newlines or commas
+        let lines = details
+          .split(/[\n,]+/)
+          .map((l) => l.trim())
+          .filter((l) => l !== "");
+
+        // Capitalize + clean each line
+        lines = lines.map((line) => {
+          // Capitalize first letter of each word
+          line = line.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+          // Clean spacing (e.g., "4 x 6" → "4x6")
+          line = line.replace(/\s*x\s*/i, "x");
+          return line;
+        });
+
+        // Join back with newlines
+        details = lines.join("\n");
+
+        // Build workout object
+        const newWorkout = {
+          name,
+          day,
+          time,
+          details,
+        };
+
+        // Save workouts
+        const workouts = JSON.parse(localStorage.getItem("workouts") || "[]");
+        workouts.push(newWorkout);
+        localStorage.setItem("workouts", JSON.stringify(workouts));
+
+        alert("✅ Workout added!");
+        document.getElementById("details").value = details; // show formatted
+      };
     </script>
   </body>
 </html>
+

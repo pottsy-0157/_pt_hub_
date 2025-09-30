@@ -413,6 +413,37 @@
         document.getElementById("summaryCard").style.display = "block";
         document.getElementById("progressBar").style.width = "100%";
       };
+
+      // Load workouts from workouts.json
+      fetch("workouts.json")
+        .then((res) => res.json())
+        .then((workouts) => {
+          const container = document.getElementById("workout-container");
+          container.innerHTML = "";
+
+          workouts.forEach((workout, index) => {
+            const card = document.createElement("div");
+            card.className = "workout-card";
+            card.innerHTML = `
+          <h3>${workout.day} - ${workout.name}</h3>
+          <p><strong>Time:</strong> ${workout.time}</p>
+          <button onclick="openWorkout(${index})">Open Workout</button>
+        `;
+            container.appendChild(card);
+          });
+
+          // Store all workouts so openWorkout can access them
+          window.workouts = workouts;
+        })
+        .catch((err) => console.error("Error loading workouts.json", err));
+
+      function openWorkout(index) {
+        sessionStorage.setItem(
+          "selectedWorkout",
+          JSON.stringify(window.workouts[index])
+        );
+        window.location.href = "workout.html"; // change name if your detail page is different
+      }
     </script>
   </body>
 </html>

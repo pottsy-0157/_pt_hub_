@@ -29,7 +29,7 @@
         <ul class="nav-links" id="mobileNavLinks">
           <li><a href="blog-articles.html">CLASSES</a></li>
           <li><a href="behind-brand.html">BEHIND THE BRAND</a></li>
-          <li><a href="workouts.html">WORKOUTS</a></li>
+          <li><a href="login.html">WORKOUTS</a></li>
         </ul>
       </div>
       <!-- ... -->
@@ -238,6 +238,24 @@
           });
         }
       });
+
+      const currentUser = JSON.parse(
+        localStorage.getItem("currentUser") || "null"
+      );
+
+      if (!currentUser) {
+        // Not logged in, send to login page
+        window.location.href = "login.html";
+      }
+
+      // If on admin page, make sure only your email can see it
+      if (
+        window.location.pathname.endsWith("admin.html") &&
+        !currentUser.isAdmin
+      ) {
+        alert("Access denied!");
+        window.location.href = "index.html";
+      }
     </script>
   </body>
 </html>

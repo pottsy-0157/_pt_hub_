@@ -3,9 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
     <link rel="stylesheet" href="styles.css" />
-    <script defer src="script.js"></script>
+    <title>Login</title>
   </head>
   <body>
     <div class="auth-page">
@@ -20,13 +19,89 @@
             placeholder="Password"
             required
           />
-          <button type="submit" class="auth-btn">Login</button>
+          <button type="submit" class="auth-btn">Login / Sign Up</button>
         </form>
         <div id="authMessage" class="auth-message" aria-live="polite"></div>
-        <p class="auth-hint">
-          No account? Enter email + any password to create one.
-        </p>
       </div>
     </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const ADMIN_EMAIL = "Lewispotts0310@gmail.com";
+
+        function getUsers() {
+          return JSON.parse(localStorage.getItem("users") || "{}");
+        }
+
+        function saveUsers(users) {
+          localStorage.setItem("users", JSON.stringify(users));
+        }
+
+        function getSessions() {
+          return JSON.parse(localStorage.getItem("sessions") || "{}");
+        }
+
+        function saveSessions(sessions) {
+          localStorage.setItem("sessions", JSON.stringify(sessions));
+        }
+
+        const loginForm = document.getElementById("loginForm");
+
+        loginForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+
+          const email = document.getElementById("authEmail").value.trim();
+          const password = document.getElementById("authPassword").value.trim();
+          if (!email || !password)
+            return alert("Enter both email and password!");
+
+          let users = getUsers();
+
+          // If user does not exist, create
+          if (!users[email]) {
+            users[email] = {
+              uid: "uid_" + Date.now(),
+              email,
+              password,
+              totalWorkouts: 0,
+              currentWorkout: "-",
+              totalMinutes: 0,
+            };
+          } else {
+            if (users[email].password !== password) {
+              return alert("Wrong password!");
+            }
+          }
+
+          saveUsers(users);
+
+          // Save current user
+          localStorage.setItem("currentUser", JSON.stringify(users[email]));
+
+          // Add to sessions (for online status)
+          const sessions = getSessions();
+          const sessionId = "sess_" + Date.now();
+          sessions[sessionId] = { email };
+          saveSessions(sessions);
+          localStorage.setItem("sessionId", sessionId);
+
+          // Redirect
+          if (email === ADMIN_EMAIL) {
+            window.location.href = "index.html"; // send admin to dashboard
+          } else {
+            window.location.href = "index.html"; // normal users to main page
+          }
+        });
+      });
+
+      // Handle logout when tab closed
+      window.addEventListener("beforeunload", () => {
+        const sessionId = localStorage.getItem("sessionId");
+        if (!sessionId) return;
+        let sessions = JSON.parse(localStorage.getItem("sessions") || "{}");
+        delete sessions[sessionId];
+        localStorage.setItem("sessions", JSON.stringify(sessions));
+      });
+    </script>
   </body>
 </html>

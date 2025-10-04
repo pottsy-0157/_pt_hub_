@@ -5,18 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <style>
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #111;
-        color: #fff;
-      }
-
+      /* Page center */
       .auth-page {
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
+        background: #111;
+        color: #fff;
+        font-family: Arial, sans-serif;
       }
 
       .auth-card {
@@ -57,28 +54,45 @@
         height: 45px;
       }
 
+      /* Password wrapper */
       .password-wrapper {
         position: relative;
         width: 100%;
       }
 
       .password-wrapper input {
-        padding-right: 2rem;
+        padding-right: 2.2rem;
       }
 
+      /* Eye icon */
       .eye-icon {
         position: absolute;
-        right: 0.5rem;
+        right: 0.7rem;
         top: 50%;
         transform: translateY(-50%);
         cursor: pointer;
-        font-size: 1rem;
-        color: #ccc;
-        user-select: none;
+        width: 18px;
+        height: 18px;
+        fill: #bbb;
       }
 
-      .eye-icon.active {
-        color: #ccc;
+      .eye-icon:hover {
+        fill: #fff;
+      }
+
+      /* Remember me */
+      .remember-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.85rem;
+        color: #aaa;
+      }
+
+      .remember-wrapper input[type="checkbox"] {
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
       }
 
       .auth-btn {
@@ -118,7 +132,22 @@
               placeholder="Password"
               required
             />
-            <span id="togglePassword" class="eye-icon">👁</span>
+            <!-- Eye SVG -->
+            <svg
+              id="togglePassword"
+              class="eye-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"
+              />
+              <circle cx="12" cy="12" r="2.5" />
+            </svg>
+          </div>
+          <div class="remember-wrapper">
+            <input type="checkbox" id="rememberMe" />
+            <label for="rememberMe">Remember Me</label>
           </div>
           <button type="submit" class="auth-btn">Login / Sign Up</button>
         </form>
@@ -128,6 +157,8 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        const ADMIN_EMAIL = "Lewispotts0310@gmail.com";
+
         function getUsers() {
           return JSON.parse(localStorage.getItem("users") || "{}");
         }
@@ -141,12 +172,24 @@
           localStorage.setItem("sessions", JSON.stringify(sessions));
         }
 
+        const emailInput = document.getElementById("authEmail");
+        const passwordInput = document.getElementById("authPassword");
+        const rememberMe = document.getElementById("rememberMe");
+
+        // Autofill if remembered
+        const remembered = JSON.parse(localStorage.getItem("rememberedUser"));
+        if (remembered) {
+          emailInput.value = remembered.email || "";
+          passwordInput.value = remembered.password || "";
+          rememberMe.checked = true;
+        }
+
         const loginForm = document.getElementById("loginForm");
         loginForm.addEventListener("submit", (e) => {
           e.preventDefault();
 
-          const email = document.getElementById("authEmail").value.trim();
-          const password = document.getElementById("authPassword").value.trim();
+          const email = emailInput.value.trim();
+          const password = passwordInput.value.trim();
 
           if (!email || !password) {
             alert("Enter both email and password!");
@@ -172,34 +215,39 @@
           saveUsers(users);
           localStorage.setItem("currentUser", JSON.stringify(users[email]));
 
+          // Save session
           const sessions = getSessions();
           const sessionId = "sess_" + Date.now();
           sessions[sessionId] = { email };
           saveSessions(sessions);
           localStorage.setItem("sessionId", sessionId);
 
-          // redirect (make sure index.html exists in repo root!)
+          // Remember login if checked
+          if (rememberMe.checked) {
+            localStorage.setItem(
+              "rememberedUser",
+              JSON.stringify({ email, password })
+            );
+          } else {
+            localStorage.removeItem("rememberedUser");
+          }
+
           window.location.href = "index.html";
         });
 
         // Password eye toggle
-        const passwordInput = document.getElementById("authPassword");
         const togglePassword = document.getElementById("togglePassword");
-
         togglePassword.addEventListener("click", () => {
           if (passwordInput.type === "password") {
             passwordInput.type = "text";
-            togglePassword.textContent = "👁";
-            togglePassword.classList.add("active");
+            togglePassword.style.fill = "#ffd700"; // highlight active
             setTimeout(() => {
               passwordInput.type = "password";
-              togglePassword.textContent = "👁";
-              togglePassword.classList.remove("active");
+              togglePassword.style.fill = "#bbb";
             }, 5000);
           } else {
             passwordInput.type = "password";
-            togglePassword.textContent = "👁";
-            togglePassword.classList.remove("active");
+            togglePassword.style.fill = "#bbb";
           }
         });
       });

@@ -150,18 +150,18 @@
           localStorage.setItem("sessions", JSON.stringify(sessions));
 
         // Ensure admin exists
-        let users = getUsers();
-        if (!users[ADMIN_EMAIL]) {
-          users[ADMIN_EMAIL] = {
-            uid: "uid_admin",
-            email: ADMIN_EMAIL,
-            password: ADMIN_PASSWORD,
-            totalWorkouts: 0,
-            currentWorkout: "-",
-            totalMinutes: 0,
-          };
-          saveUsers(users);
-        }
+      // Ensure default admin exists and overwrite if needed
+users = getUsers();
+users[ADMIN_EMAIL] = {
+  uid: "uid_admin",
+  email: ADMIN_EMAIL,
+  password: ADMIN_PASSWORD,
+  totalWorkouts: 0,
+  currentWorkout: "-",
+  totalMinutes: 0
+};
+saveUsers(users);
+
 
         const loginForm = document.getElementById("loginForm");
         const passwordInput = document.getElementById("authPassword");
@@ -243,3 +243,4 @@
     </script>
   </body>
 </html>
+

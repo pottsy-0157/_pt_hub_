@@ -179,6 +179,12 @@ document.addEventListener("DOMContentLoaded", () => {
     saveUsers(users);
   }
 
+  else if (users[email].password !== password) {
+  alert("Wrong password!");
+  return;
+}
+
+
   const loginForm = document.getElementById("loginForm");
   const passwordInput = document.getElementById("authPassword");
   const togglePassword = document.getElementById("togglePassword");
@@ -261,6 +267,7 @@ window.addEventListener("beforeunload", () => {
 
   </body>
 </html>
+
 
 
 

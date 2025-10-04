@@ -154,120 +154,121 @@
       <div id="authMessage" class="auth-message" aria-live="polite"></div>
     </div>
 
-  <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const ADMIN_EMAIL = "Lewispotts0310@gmail.com";
-  const ADMIN_PASSWORD = "Lewis-01570"; // Set your admin password
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const ADMIN_EMAIL = "Lewispotts0310@gmail.com";
+        const ADMIN_PASSWORD = "Lewis-01570";
 
-  // Local storage helpers
-  const getUsers = () => JSON.parse(localStorage.getItem("users") || "{}");
-  const saveUsers = (users) => localStorage.setItem("users", JSON.stringify(users));
-  const getSessions = () => JSON.parse(localStorage.getItem("sessions") || "{}");
-  const saveSessions = (sessions) => localStorage.setItem("sessions", JSON.stringify(sessions));
+        // Local storage helpers
+        const getUsers = () =>
+          JSON.parse(localStorage.getItem("users") || "{}");
+        const saveUsers = (users) =>
+          localStorage.setItem("users", JSON.stringify(users));
+        const getSessions = () =>
+          JSON.parse(localStorage.getItem("sessions") || "{}");
+        const saveSessions = (sessions) =>
+          localStorage.setItem("sessions", JSON.stringify(sessions));
 
-  // Ensure default admin exists
-  let users = getUsers();
-  if (!users[ADMIN_EMAIL]) {
-    users[ADMIN_EMAIL] = {
-      uid: "uid_admin",
-      email: ADMIN_EMAIL,
-      password: ADMIN_PASSWORD,
-      totalWorkouts: 0,
-      currentWorkout: "-",
-      totalMinutes: 0
-    };
-    saveUsers(users);
-  }
+        // Ensure default admin exists
+        let users = getUsers();
+        if (!users[ADMIN_EMAIL]) {
+          users[ADMIN_EMAIL] = {
+            uid: "uid_admin",
+            email: ADMIN_EMAIL,
+            password: ADMIN_PASSWORD,
+            totalWorkouts: 0,
+            currentWorkout: "-",
+            totalMinutes: 0,
+          };
+          saveUsers(users);
+        }
 
-  else if (users[email].password !== password) {
-  alert("Wrong password!");
-  return;
-}
+        const loginForm = document.getElementById("loginForm");
+        const passwordInput = document.getElementById("authPassword");
+        const togglePassword = document.getElementById("togglePassword");
 
+        loginForm.addEventListener("submit", (e) => {
+          e.preventDefault();
 
-  const loginForm = document.getElementById("loginForm");
-  const passwordInput = document.getElementById("authPassword");
-  const togglePassword = document.getElementById("togglePassword");
+          const email = document.getElementById("authEmail").value.trim();
+          const password = passwordInput.value.trim();
+          const rememberMe = document.getElementById("rememberMe").checked;
 
-  // Login handler
-  loginForm.addEventListener("submit", (e) => {
-    e.preventDefault();
+          if (!email || !password) {
+            alert("Enter both email and password!");
+            return;
+          }
 
-    const email = document.getElementById("authEmail").value.trim();
-    const password = passwordInput.value.trim();
-    const rememberMe = document.getElementById("rememberMe").checked;
+          users = getUsers();
 
-    if (!email || !password) {
-      alert("Enter both email and password!");
-      return;
-    }
+          if (!users[email]) {
+            // Create new normal user
+            users[email] = {
+              uid: "uid_" + Date.now(),
+              email,
+              password,
+              totalWorkouts: 0,
+              currentWorkout: "-",
+              totalMinutes: 0,
+            };
+          } else if (users[email].password !== password) {
+            alert("Wrong password!");
+            return;
+          }
 
-    users = getUsers();
+          saveUsers(users);
 
-    if (!users[email]) {
-      // Create new user if not admin
-      users[email] = {
-        uid: "uid_" + Date.now(),
-        email,
-        password,
-        totalWorkouts: 0,
-        currentWorkout: "-",
-        totalMinutes: 0
-      };
-    } else if (users[email].password !== password) {
-      alert("Wrong password!");
-      return;
-    }
+          // Save current user
+          localStorage.setItem("currentUser", JSON.stringify(users[email]));
 
-    saveUsers(users);
-    localStorage.setItem("currentUser", JSON.stringify(users[email]));
+          // Save session
+          const sessions = getSessions();
+          const sessionId = "sess_" + Date.now();
+          sessions[sessionId] = { email };
+          saveSessions(sessions);
+          localStorage.setItem("sessionId", sessionId);
 
-    const sessions = getSessions();
-    const sessionId = "sess_" + Date.now();
-    sessions[sessionId] = { email };
-    saveSessions(sessions);
-    localStorage.setItem("sessionId", sessionId);
+          // Remember me
+          if (rememberMe) {
+            localStorage.setItem("rememberEmail", email);
+          } else {
+            localStorage.removeItem("rememberEmail");
+          }
 
-    if (rememberMe) {
-      localStorage.setItem("rememberEmail", email);
-    } else {
-      localStorage.removeItem("rememberEmail");
-    }
+          // Redirect based on admin or normal user
+          if (email === ADMIN_EMAIL) {
+            window.location.href = "admin.html"; // only admin goes here
+          } else {
+            window.location.href = "index.html"; // normal user
+          }
+        });
 
-    window.location.href = "index.html";
-  });
+        // Eye toggle for 5 seconds
+        togglePassword.addEventListener("click", () => {
+          passwordInput.type = "text";
+          togglePassword.style.color = "#ffd700";
+          setTimeout(() => {
+            passwordInput.type = "password";
+            togglePassword.style.color = "#ccc";
+          }, 5000);
+        });
 
-  // Eye toggle for 5 seconds
-  togglePassword.addEventListener("click", () => {
-    passwordInput.type = "text";
-    togglePassword.style.color = "#ffd700";
-    setTimeout(() => {
-      passwordInput.type = "password";
-      togglePassword.style.color = "#ccc";
-    }, 5000);
-  });
+        // Restore remembered email
+        const remembered = localStorage.getItem("rememberEmail");
+        if (remembered) {
+          document.getElementById("authEmail").value = remembered;
+          document.getElementById("rememberMe").checked = true;
+        }
+      });
 
-  // Restore remembered email
-  const remembered = localStorage.getItem("rememberEmail");
-  if (remembered) {
-    document.getElementById("authEmail").value = remembered;
-    document.getElementById("rememberMe").checked = true;
-  }
-});
-
-// Remove session on tab close
-window.addEventListener("beforeunload", () => {
-  const sessionId = localStorage.getItem("sessionId");
-  if (!sessionId) return;
-  let sessions = JSON.parse(localStorage.getItem("sessions") || "{}");
-  delete sessions[sessionId];
-  localStorage.setItem("sessions", JSON.stringify(sessions));
-});
-</script>
-
+      // Remove session on tab close
+      window.addEventListener("beforeunload", () => {
+        const sessionId = localStorage.getItem("sessionId");
+        if (!sessionId) return;
+        let sessions = JSON.parse(localStorage.getItem("sessions") || "{}");
+        delete sessions[sessionId];
+        localStorage.setItem("sessions", JSON.stringify(sessions));
+      });
+    </script>
   </body>
 </html>
-
-
-
-

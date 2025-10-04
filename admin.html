@@ -171,11 +171,13 @@
     </div>
 
     <script>
-      const ADMIN_EMAIL = "Lewispotts0310@gmail.com";
+      const ADMIN_EMAIL = "lewispotts0310@gmail.com"; // lowercase for safety
       const currentUser = JSON.parse(
         localStorage.getItem("currentUser") || "null"
       );
-      if (!currentUser || currentUser.email !== ADMIN_EMAIL) {
+
+      // Check if admin
+      if (!currentUser || currentUser.email.toLowerCase() !== ADMIN_EMAIL) {
         alert("Access denied.");
         window.location.href = "login.html";
       }
@@ -188,13 +190,13 @@
         workouts.forEach((w, i) => {
           const tr = document.createElement("tr");
           tr.innerHTML = `
-      <td>${w.day}</td>
-      <td>${w.name}</td>
-      <td>${w.time}</td>
-      <td>${w.encouragement}</td>
-      <td>${w.details || "-"}</td>
-      <td><button class="remove-workout-btn" data-index="${i}">Remove</button></td>
-    `;
+            <td>${w.day}</td>
+            <td>${w.name}</td>
+            <td>${w.time}</td>
+            <td>${w.encouragement}</td>
+            <td>${w.details || "-"}</td>
+            <td><button class="remove-workout-btn" data-index="${i}">Remove</button></td>
+          `;
           tbody.appendChild(tr);
         });
       }
@@ -263,14 +265,14 @@
 
           const tr = document.createElement("tr");
           tr.innerHTML = `
-      <td>${u.uid}</td>
-      <td>${u.email}</td>
-      <td>${totalWorkouts}</td>
-      <td>${status}</td>
-      <td>${currentWorkout}</td>
-      <td>${hours}h ${minutes}m</td>
-      <td><button class="remove-user-btn" data-email="${u.email}">Remove</button></td>
-    `;
+            <td>${u.uid}</td>
+            <td>${u.email}</td>
+            <td>${totalWorkouts}</td>
+            <td>${status}</td>
+            <td>${currentWorkout}</td>
+            <td>${hours}h ${minutes}m</td>
+            <td><button class="remove-user-btn" data-email="${u.email}">Remove</button></td>
+          `;
           tbody.appendChild(tr);
         });
       }
@@ -280,7 +282,7 @@
         .addEventListener("click", (e) => {
           if (!e.target.classList.contains("remove-user-btn")) return;
           const email = e.target.dataset.email;
-          if (email === ADMIN_EMAIL)
+          if (email.toLowerCase() === ADMIN_EMAIL)
             return alert("Cannot delete admin account!");
           if (!confirm(`Delete ${email}?`)) return;
 
@@ -310,7 +312,7 @@
         window.location.href = "login.html";
       });
 
-      // Auto-refresh both tables every 2 seconds
+      // Auto-refresh
       renderWorkouts();
       renderUsers();
       setInterval(() => {

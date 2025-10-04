@@ -8,8 +8,10 @@
     />
     <title>My Profile</title>
     <style>
+      /* Box sizing and remove iOS tap highlight */
       * {
         box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent; /* iOS Safari fix */
       }
 
       body {
@@ -33,6 +35,8 @@
         text-align: center;
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        -webkit-transform-style: preserve-3d;
+        -webkit-backface-visibility: hidden;
       }
 
       .profile-card:hover {
@@ -48,7 +52,9 @@
         border: 3px solid gold;
         margin-bottom: 1rem;
         box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-        transition: box-shadow 0.3s ease, transform 0.3s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        -webkit-transform-style: preserve-3d;
+        -webkit-backface-visibility: hidden;
       }
 
       .profile-card img:hover {
@@ -103,16 +109,25 @@
           max-width: 95%;
           box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
         }
+
         h1 {
           font-size: 1.5rem;
         }
+
         .profile-card img {
-          box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); /* keep subtle glow on mobile */
+          box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); /* subtle glow */
           border: 2px solid gold;
         }
+
+        /* Disable hover effects on mobile to prevent flicker */
         .profile-card:hover {
-          transform: none; /* disable hover scale on mobile */
+          transform: none;
           box-shadow: 0 6px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .profile-card img:hover {
+          transform: none;
+          box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
       }
     </style>

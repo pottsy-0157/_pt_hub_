@@ -175,9 +175,7 @@
       const currentUser = JSON.parse(
         localStorage.getItem("currentUser") || "{}"
       );
-
       if (!currentUser.email || currentUser.email !== ADMIN_EMAIL) {
-        // Not admin, redirect to login
         alert("Access denied! Admins only.");
         window.location.href = "index.html";
       }

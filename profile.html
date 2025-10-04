@@ -2,33 +2,41 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>My Profile</title>
     <style>
+      * {
+        box-sizing: border-box;
+      }
+
       body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #1a1a1a, #222);
+        font-family: "Poppins", Arial, sans-serif;
+        background: linear-gradient(145deg, #0e0e0e, #1c1c1c);
         color: #fff;
         margin: 0;
         padding: 0;
-      }
-
-      .profile-container {
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
-        padding: 2rem;
       }
 
       .profile-card {
-        background: #1f1f1f;
+        background: #1a1a1a;
         border-radius: 16px;
         padding: 2rem;
-        max-width: 500px;
-        width: 100%;
+        max-width: 420px;
+        width: 90%;
         text-align: center;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+        transition: transform 0.3s ease;
+      }
+
+      .profile-card:hover {
+        transform: scale(1.02);
       }
 
       .profile-card img {
@@ -38,64 +46,77 @@
         object-fit: cover;
         border: 3px solid gold;
         margin-bottom: 1rem;
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
       }
 
       h1 {
         margin: 0.5rem 0;
-        font-size: 2rem;
+        font-size: 1.8rem;
         color: gold;
       }
 
       .profile-info {
         text-align: left;
-        margin-top: 1rem;
+        margin-top: 1.5rem;
+        font-size: 0.95rem;
       }
 
       .profile-info p {
-        margin: 0.5rem 0;
+        margin: 0.6rem 0;
+        line-height: 1.5;
       }
 
       .profile-info strong {
         color: gold;
+        font-weight: 600;
       }
 
       button {
-        margin-top: 1.5rem;
-        padding: 0.7rem 1.5rem;
+        margin-top: 2rem;
+        padding: 0.8rem 1.8rem;
         cursor: pointer;
         border: none;
         border-radius: 8px;
         background: gold;
         color: #111;
-        font-weight: bold;
-        transition: 0.2s;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: background 0.25s;
       }
 
       button:hover {
         background: darkorange;
       }
+
+      @media (max-width: 500px) {
+        .profile-card {
+          padding: 1.5rem;
+          max-width: 95%;
+        }
+        h1 {
+          font-size: 1.5rem;
+        }
+      }
     </style>
   </head>
   <body>
-    <div class="profile-container">
-      <div class="profile-card">
-        <img
-          id="profilePic"
-          src="https://via.placeholder.com/120"
-          alt="Profile Picture"
-        />
-        <h1 id="userName">User Name</h1>
-        <div class="profile-info">
-          <p><strong>Email:</strong> <span id="userEmail"></span></p>
-          <p><strong>Status:</strong> <span id="userStatus"></span></p>
-          <p><strong>Member Since:</strong> <span id="memberSince"></span></p>
-          <p>
-            <strong>Bio:</strong>
-            <span id="userBio">This is a short bio about the user.</span>
-          </p>
-        </div>
-        <button id="logoutBtn">Logout</button>
+    <div class="profile-card">
+      <img
+        id="profilePic"
+        src="https://via.placeholder.com/120"
+        alt="Profile Picture"
+      />
+      <h1 id="userName">User Name</h1>
+      <div class="profile-info">
+        <p><strong>Email:</strong> <span id="userEmail"></span></p>
+        <p><strong>Status:</strong> <span id="userStatus"></span></p>
+        <p><strong>Member Since:</strong> <span id="memberSince"></span></p>
+        <p>
+          <strong>Bio:</strong>
+          <span id="userBio">This is a short bio about the user.</span>
+        </p>
       </div>
+      <button id="logoutBtn">Logout</button>
     </div>
 
     <script>
@@ -114,7 +135,7 @@
         document.getElementById("userBio").textContent =
           currentUser.bio || "No bio available.";
         document.getElementById("profilePic").src =
-          currentUser.photoURL || "ed0eb2a0-3f3c-4f0d-9f6d-8f7e9c6c8e1b.png"; // default pic
+          currentUser.photoURL || "ed0eb2a0-3f3c-4f0d-9f6d-8f7e9c6c8e1b.png";
       }
 
       document.getElementById("logoutBtn").addEventListener("click", () => {

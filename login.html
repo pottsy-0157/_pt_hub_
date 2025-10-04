@@ -28,7 +28,7 @@
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         text-align: center;
       }
-      .auth-card h1 {
+      h1 {
         margin-bottom: 0.5rem;
       }
       .auth-sub {
@@ -101,11 +101,6 @@
       .auth-btn:hover {
         background: #e6c200;
       }
-      .auth-message {
-        margin-top: 1rem;
-        font-size: 0.9rem;
-        color: #ff4444;
-      }
     </style>
   </head>
   <body>
@@ -131,8 +126,6 @@
 
         <button type="submit" class="auth-btn">Login / Sign Up</button>
       </form>
-
-      <div id="authMessage" class="auth-message" aria-live="polite"></div>
     </div>
 
     <script>
@@ -144,12 +137,8 @@
           JSON.parse(localStorage.getItem("users") || "{}");
         const saveUsers = (users) =>
           localStorage.setItem("users", JSON.stringify(users));
-        const getSessions = () =>
-          JSON.parse(localStorage.getItem("sessions") || "{}");
-        const saveSessions = (sessions) =>
-          localStorage.setItem("sessions", JSON.stringify(sessions));
 
-        // FORCE admin user to always have correct password
+        // Ensure admin is always correct
         let users = getUsers();
         users[ADMIN_EMAIL] = {
           uid: "uid_admin",
@@ -197,13 +186,6 @@
           saveUsers(users);
           localStorage.setItem("currentUser", JSON.stringify(users[email]));
 
-          // Save session
-          const sessions = getSessions();
-          const sessionId = "sess_" + Date.now();
-          sessions[sessionId] = { email };
-          saveSessions(sessions);
-          localStorage.setItem("sessionId", sessionId);
-
           if (rememberMe) localStorage.setItem("rememberEmail", email);
           else localStorage.removeItem("rememberEmail");
 
@@ -222,21 +204,11 @@
           }, 5000);
         });
 
-        // Restore remembered email
         const remembered = localStorage.getItem("rememberEmail");
         if (remembered) {
           document.getElementById("authEmail").value = remembered;
           document.getElementById("rememberMe").checked = true;
         }
-      });
-
-      // Remove session on tab close
-      window.addEventListener("beforeunload", () => {
-        const sessionId = localStorage.getItem("sessionId");
-        if (!sessionId) return;
-        let sessions = JSON.parse(localStorage.getItem("sessions") || "{}");
-        delete sessions[sessionId];
-        localStorage.setItem("sessions", JSON.stringify(sessions));
       });
     </script>
   </body>

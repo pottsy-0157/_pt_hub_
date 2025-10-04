@@ -4,28 +4,31 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <title>Login</title>
     <style>
-      /* Page center */
-      .auth-page {
+      /* Centered full page */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: #0f0f0f;
+        color: #fff;
+        height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 100vh;
-        background: #111;
-        color: #fff;
-        font-family: Arial, sans-serif;
       }
 
       .auth-card {
         background: #1c1c1c;
         padding: 2rem;
-        border-radius: 12px;
-        width: 320px;
+        border-radius: 14px;
+        width: 90%;
+        max-width: 360px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         text-align: center;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
       }
 
       .auth-card h1 {
@@ -38,37 +41,33 @@
         color: #aaa;
       }
 
-      .auth-form {
+      form {
         display: flex;
         flex-direction: column;
         gap: 1rem;
       }
 
-      .auth-form input {
+      input {
         padding: 0.8rem;
         border: none;
         border-radius: 8px;
         font-size: 1rem;
         outline: none;
-        width: 100%;
         background: #2a2a2a;
         color: #fff;
+        width: 100%;
         box-sizing: border-box;
       }
 
-      /* Password wrapper */
+      /* Password input with eye */
       .password-wrapper {
         position: relative;
-        display: flex;
-        align-items: center;
       }
 
       .password-wrapper input {
-        width: 100%;
         padding-right: 2.5rem;
       }
 
-      /* Eye button */
       .eye-btn {
         position: absolute;
         right: 0.75rem;
@@ -77,37 +76,41 @@
         background: none;
         border: none;
         cursor: pointer;
-        font-size: 16px;
-        color: #bbb;
-        padding: 0;
+        color: #ccc;
+        font-size: 1.2rem;
         line-height: 1;
+        padding: 0;
       }
+
       .eye-btn:focus {
         outline: none;
       }
 
-      /* Remember me */
+      /* Remember me row */
       .remember-me {
         display: flex;
         align-items: center;
-        font-size: 0.9rem;
-        color: #ccc;
         gap: 0.5rem;
-      }
-      .remember-me input {
-        width: auto;
-        height: auto;
-        margin: 0;
+        color: #ccc;
+        font-size: 0.9rem;
+        margin-top: 0.2rem;
       }
 
+      .remember-me input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #ffd700;
+      }
+
+      /* Button */
       .auth-btn {
-        padding: 0.8rem;
+        padding: 0.9rem;
         border: none;
         border-radius: 8px;
         background: #ffd700;
         color: #111;
-        font-size: 1rem;
         font-weight: bold;
+        font-size: 1rem;
         cursor: pointer;
         transition: background 0.2s ease;
       }
@@ -116,6 +119,7 @@
         background: #e6c200;
       }
 
+      /* Message text */
       .auth-message {
         margin-top: 1rem;
         font-size: 0.9rem;
@@ -124,55 +128,56 @@
     </style>
   </head>
   <body>
-    <div class="auth-page">
-      <div class="auth-card">
-        <h1>Sign in</h1>
-        <p class="auth-sub">Use your email to access workouts and progress.</p>
-        <form id="loginForm" class="auth-form" novalidate>
-          <input type="email" id="authEmail" placeholder="Email" required />
-          <div class="password-wrapper">
-            <input
-              type="password"
-              id="authPassword"
-              placeholder="Password"
-              required
-            />
-            <button type="button" id="togglePassword" class="eye-btn">
-              &#128065;
-            </button>
-          </div>
-          <label class="remember-me">
-            <input type="checkbox" id="rememberMe" /> Remember me
-          </label>
-          <button type="submit" class="auth-btn">Login / Sign Up</button>
-        </form>
-        <div id="authMessage" class="auth-message" aria-live="polite"></div>
-      </div>
+    <div class="auth-card">
+      <h1>Sign in</h1>
+      <p class="auth-sub">Use your email to access workouts and progress.</p>
+
+      <form id="loginForm" novalidate>
+        <input type="email" id="authEmail" placeholder="Email" required />
+        <div class="password-wrapper">
+          <input
+            type="password"
+            id="authPassword"
+            placeholder="Password"
+            required
+          />
+          <button type="button" id="togglePassword" class="eye-btn">👁️</button>
+        </div>
+
+        <label class="remember-me">
+          <input type="checkbox" id="rememberMe" /> Remember me
+        </label>
+
+        <button type="submit" class="auth-btn">Login / Sign Up</button>
+      </form>
+
+      <div id="authMessage" class="auth-message" aria-live="polite"></div>
     </div>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const ADMIN_EMAIL = "Lewispotts0310@gmail.com";
 
-        function getUsers() {
-          return JSON.parse(localStorage.getItem("users") || "{}");
-        }
-        function saveUsers(users) {
+        // Local storage helpers
+        const getUsers = () =>
+          JSON.parse(localStorage.getItem("users") || "{}");
+        const saveUsers = (users) =>
           localStorage.setItem("users", JSON.stringify(users));
-        }
-        function getSessions() {
-          return JSON.parse(localStorage.getItem("sessions") || "{}");
-        }
-        function saveSessions(sessions) {
+        const getSessions = () =>
+          JSON.parse(localStorage.getItem("sessions") || "{}");
+        const saveSessions = (sessions) =>
           localStorage.setItem("sessions", JSON.stringify(sessions));
-        }
 
         const loginForm = document.getElementById("loginForm");
+        const passwordInput = document.getElementById("authPassword");
+        const togglePassword = document.getElementById("togglePassword");
+
+        // Login handler
         loginForm.addEventListener("submit", (e) => {
           e.preventDefault();
 
           const email = document.getElementById("authEmail").value.trim();
-          const password = document.getElementById("authPassword").value.trim();
+          const password = passwordInput.value.trim();
           const rememberMe = document.getElementById("rememberMe").checked;
 
           if (!email || !password) {
@@ -214,14 +219,13 @@
           window.location.href = "index.html";
         });
 
-        // Password eye toggle
-        const passwordInput = document.getElementById("authPassword");
-        const togglePassword = document.getElementById("togglePassword");
-
+        // Eye toggle for 5 seconds
         togglePassword.addEventListener("click", () => {
           passwordInput.type = "text";
+          togglePassword.style.color = "#ffd700";
           setTimeout(() => {
             passwordInput.type = "password";
+            togglePassword.style.color = "#ccc";
           }, 5000);
         });
 
@@ -233,7 +237,7 @@
         }
       });
 
-      // Clear session when closing tab
+      // Remove session on tab close
       window.addEventListener("beforeunload", () => {
         const sessionId = localStorage.getItem("sessionId");
         if (!sessionId) return;

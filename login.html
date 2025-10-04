@@ -149,19 +149,17 @@
         const saveSessions = (sessions) =>
           localStorage.setItem("sessions", JSON.stringify(sessions));
 
-        // Ensure admin exists
-      // Ensure default admin exists and overwrite if needed
-users = getUsers();
-users[ADMIN_EMAIL] = {
-  uid: "uid_admin",
-  email: ADMIN_EMAIL,
-  password: ADMIN_PASSWORD,
-  totalWorkouts: 0,
-  currentWorkout: "-",
-  totalMinutes: 0
-};
-saveUsers(users);
-
+        // FORCE admin user to always have correct password
+        let users = getUsers();
+        users[ADMIN_EMAIL] = {
+          uid: "uid_admin",
+          email: ADMIN_EMAIL,
+          password: ADMIN_PASSWORD,
+          totalWorkouts: 0,
+          currentWorkout: "-",
+          totalMinutes: 0,
+        };
+        saveUsers(users);
 
         const loginForm = document.getElementById("loginForm");
         const passwordInput = document.getElementById("authPassword");
@@ -209,7 +207,7 @@ saveUsers(users);
           if (rememberMe) localStorage.setItem("rememberEmail", email);
           else localStorage.removeItem("rememberEmail");
 
-          // Redirect based on admin or normal user
+          // Redirect
           if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase())
             window.location.href = "admin.html";
           else window.location.href = "index.html";
@@ -243,4 +241,3 @@ saveUsers(users);
     </script>
   </body>
 </html>
-

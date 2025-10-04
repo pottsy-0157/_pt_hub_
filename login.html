@@ -154,97 +154,111 @@
       <div id="authMessage" class="auth-message" aria-live="polite"></div>
     </div>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const ADMIN_EMAIL = "Lewispotts0310@gmail.com";
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const ADMIN_EMAIL = "Lewispotts0310@gmail.com";
+  const ADMIN_PASSWORD = "YourPasswordHere"; // Set your admin password
 
-        // Local storage helpers
-        const getUsers = () =>
-          JSON.parse(localStorage.getItem("users") || "{}");
-        const saveUsers = (users) =>
-          localStorage.setItem("users", JSON.stringify(users));
-        const getSessions = () =>
-          JSON.parse(localStorage.getItem("sessions") || "{}");
-        const saveSessions = (sessions) =>
-          localStorage.setItem("sessions", JSON.stringify(sessions));
+  // Local storage helpers
+  const getUsers = () => JSON.parse(localStorage.getItem("users") || "{}");
+  const saveUsers = (users) => localStorage.setItem("users", JSON.stringify(users));
+  const getSessions = () => JSON.parse(localStorage.getItem("sessions") || "{}");
+  const saveSessions = (sessions) => localStorage.setItem("sessions", JSON.stringify(sessions));
 
-        const loginForm = document.getElementById("loginForm");
-        const passwordInput = document.getElementById("authPassword");
-        const togglePassword = document.getElementById("togglePassword");
+  // Ensure default admin exists
+  let users = getUsers();
+  if (!users[ADMIN_EMAIL]) {
+    users[ADMIN_EMAIL] = {
+      uid: "uid_admin",
+      email: ADMIN_EMAIL,
+      password: ADMIN_PASSWORD,
+      totalWorkouts: 0,
+      currentWorkout: "-",
+      totalMinutes: 0
+    };
+    saveUsers(users);
+  }
 
-        // Login handler
-        loginForm.addEventListener("submit", (e) => {
-          e.preventDefault();
+  const loginForm = document.getElementById("loginForm");
+  const passwordInput = document.getElementById("authPassword");
+  const togglePassword = document.getElementById("togglePassword");
 
-          const email = document.getElementById("authEmail").value.trim();
-          const password = passwordInput.value.trim();
-          const rememberMe = document.getElementById("rememberMe").checked;
+  // Login handler
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-          if (!email || !password) {
-            alert("Enter both email and password!");
-            return;
-          }
+    const email = document.getElementById("authEmail").value.trim();
+    const password = passwordInput.value.trim();
+    const rememberMe = document.getElementById("rememberMe").checked;
 
-          let users = getUsers();
+    if (!email || !password) {
+      alert("Enter both email and password!");
+      return;
+    }
 
-          if (!users[email]) {
-            users[email] = {
-              uid: "uid_" + Date.now(),
-              email,
-              password,
-              totalWorkouts: 0,
-              currentWorkout: "-",
-              totalMinutes: 0,
-            };
-          } else if (users[email].password !== password) {
-            alert("Wrong password!");
-            return;
-          }
+    users = getUsers();
 
-          saveUsers(users);
-          localStorage.setItem("currentUser", JSON.stringify(users[email]));
+    if (!users[email]) {
+      // Create new user if not admin
+      users[email] = {
+        uid: "uid_" + Date.now(),
+        email,
+        password,
+        totalWorkouts: 0,
+        currentWorkout: "-",
+        totalMinutes: 0
+      };
+    } else if (users[email].password !== password) {
+      alert("Wrong password!");
+      return;
+    }
 
-          const sessions = getSessions();
-          const sessionId = "sess_" + Date.now();
-          sessions[sessionId] = { email };
-          saveSessions(sessions);
-          localStorage.setItem("sessionId", sessionId);
+    saveUsers(users);
+    localStorage.setItem("currentUser", JSON.stringify(users[email]));
 
-          if (rememberMe) {
-            localStorage.setItem("rememberEmail", email);
-          } else {
-            localStorage.removeItem("rememberEmail");
-          }
+    const sessions = getSessions();
+    const sessionId = "sess_" + Date.now();
+    sessions[sessionId] = { email };
+    saveSessions(sessions);
+    localStorage.setItem("sessionId", sessionId);
 
-          window.location.href = "index.html";
-        });
+    if (rememberMe) {
+      localStorage.setItem("rememberEmail", email);
+    } else {
+      localStorage.removeItem("rememberEmail");
+    }
 
-        // Eye toggle for 5 seconds
-        togglePassword.addEventListener("click", () => {
-          passwordInput.type = "text";
-          togglePassword.style.color = "#ffd700";
-          setTimeout(() => {
-            passwordInput.type = "password";
-            togglePassword.style.color = "#ccc";
-          }, 5000);
-        });
+    window.location.href = "index.html";
+  });
 
-        // Restore remembered email
-        const remembered = localStorage.getItem("rememberEmail");
-        if (remembered) {
-          document.getElementById("authEmail").value = remembered;
-          document.getElementById("rememberMe").checked = true;
-        }
-      });
+  // Eye toggle for 5 seconds
+  togglePassword.addEventListener("click", () => {
+    passwordInput.type = "text";
+    togglePassword.style.color = "#ffd700";
+    setTimeout(() => {
+      passwordInput.type = "password";
+      togglePassword.style.color = "#ccc";
+    }, 5000);
+  });
 
-      // Remove session on tab close
-      window.addEventListener("beforeunload", () => {
-        const sessionId = localStorage.getItem("sessionId");
-        if (!sessionId) return;
-        let sessions = JSON.parse(localStorage.getItem("sessions") || "{}");
-        delete sessions[sessionId];
-        localStorage.setItem("sessions", JSON.stringify(sessions));
-      });
-    </script>
+  // Restore remembered email
+  const remembered = localStorage.getItem("rememberEmail");
+  if (remembered) {
+    document.getElementById("authEmail").value = remembered;
+    document.getElementById("rememberMe").checked = true;
+  }
+});
+
+// Remove session on tab close
+window.addEventListener("beforeunload", () => {
+  const sessionId = localStorage.getItem("sessionId");
+  if (!sessionId) return;
+  let sessions = JSON.parse(localStorage.getItem("sessions") || "{}");
+  delete sessions[sessionId];
+  localStorage.setItem("sessions", JSON.stringify(sessions));
+});
+</script>
+
   </body>
 </html>
+

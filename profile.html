@@ -14,10 +14,9 @@
         -webkit-tap-highlight-color: transparent; /* iOS Safari fix */
       }
 
-   body {
+  body {
   font-family: "Poppins", Arial, sans-serif;
   background: linear-gradient(145deg, #0e0e0e, #1c1c1c);
-  background-attachment: fixed; /* ensures full-screen gradient */
   color: #fff;
   margin: 0;
   padding: 0;
@@ -25,8 +24,9 @@
   justify-content: center;
   align-items: center;
   height: 100dvh; /* full dynamic viewport height */
-  min-height: 100dvh; /* extra safety for older browsers */
+  padding-bottom: env(safe-area-inset-bottom); /* fix bottom white area on iOS */
 }
+
 
 
       .profile-card {

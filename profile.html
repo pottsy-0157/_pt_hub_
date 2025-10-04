@@ -14,17 +14,20 @@
         -webkit-tap-highlight-color: transparent; /* iOS Safari fix */
       }
 
-     body {
+   body {
   font-family: "Poppins", Arial, sans-serif;
   background: linear-gradient(145deg, #0e0e0e, #1c1c1c);
-  color: #1c1c1c;
+  background-attachment: fixed; /* ensures full-screen gradient */
+  color: #fff;
   margin: 0;
   padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100dvh; /* FULL dynamic viewport height for mobile */
+  height: 100dvh; /* full dynamic viewport height */
+  min-height: 100dvh; /* extra safety for older browsers */
 }
+
 
       .profile-card {
         background: #1a1a1a;

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
     />
     <title>My Profile</title>
     <style>
@@ -88,6 +88,7 @@
         background: darkorange;
       }
 
+      /* Mobile adjustments */
       @media (max-width: 500px) {
         .profile-card {
           padding: 1.5rem;
@@ -95,6 +96,13 @@
         }
         h1 {
           font-size: 1.5rem;
+        }
+        .profile-card img {
+          box-shadow: none; /* remove glow on mobile */
+          border: 2px solid gold;
+        }
+        .profile-card:hover {
+          transform: none; /* disable hover scale on mobile */
         }
       }
     </style>
@@ -120,6 +128,7 @@
     </div>
 
     <script>
+      // Load current user
       const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
       if (!currentUser) {
@@ -138,10 +147,31 @@
           currentUser.photoURL || "ed0eb2a0-3f3c-4f0d-9f6d-8f7e9c6c8e1b.png";
       }
 
+      // Logout
       document.getElementById("logoutBtn").addEventListener("click", () => {
         localStorage.removeItem("currentUser");
         window.location.href = "login.html";
       });
+
+      // Prevent pinch zoom and double-tap zoom on iOS Safari
+      document.addEventListener(
+        "touchstart",
+        function (e) {
+          if (e.touches.length > 1) e.preventDefault();
+        },
+        { passive: false }
+      );
+
+      let lastTouchEnd = 0;
+      document.addEventListener(
+        "touchend",
+        function (e) {
+          const now = new Date().getTime();
+          if (now - lastTouchEnd <= 300) e.preventDefault();
+          lastTouchEnd = now;
+        },
+        { passive: false }
+      );
     </script>
   </body>
 </html>

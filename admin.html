@@ -171,22 +171,23 @@
     </div>
 
     <script>
-      const ADMIN_EMAIL = "Lewispotts0310@gmail.com";
-      let currentUser = {};
-      try {
-        currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
-      } catch (e) {
-        currentUser = {};
-      }
+     const ADMIN_EMAIL = "Lewispotts0310@gmail.com";
 
-      if (
-        !currentUser.email ||
-        currentUser.email.trim().toLowerCase() !== ADMIN_EMAIL.toLowerCase()
-      ) {
-        alert("Access denied! Admins only.");
-        window.location.href = "login.html";
-      }
+  // Try to get currentUser safely
+  let currentUser = {};
+  try {
+    currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+  } catch(e) {
+    currentUser = {};
+  }
 
+  // Normalize email (trim + lowercase)
+  const currentEmail = currentUser.email ? currentUser.email.trim().toLowerCase() : "";
+
+  if (currentEmail !== ADMIN_EMAIL.toLowerCase()) {
+    alert("Access denied! Admins only.");
+    window.location.href = "login.html";
+  }
       // ---------- WORKOUTS ----------
       let workouts = JSON.parse(localStorage.getItem("workouts") || "[]");
       function renderWorkouts() {
@@ -327,3 +328,4 @@
     </script>
   </body>
 </html>
+

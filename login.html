@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
     <title>Login</title>
     <style>
       /* Page center */
@@ -51,48 +54,50 @@
         background: #2a2a2a;
         color: #fff;
         box-sizing: border-box;
-        height: 45px;
       }
 
       /* Password wrapper */
       .password-wrapper {
         position: relative;
-        width: 100%;
+        display: flex;
+        align-items: center;
       }
 
       .password-wrapper input {
-        padding-right: 2.2rem;
+        width: 100%;
+        padding-right: 2.5rem;
       }
 
-      /* Eye icon */
-      .eye-icon {
+      /* Eye button */
+      .eye-btn {
         position: absolute;
-        right: 0.7rem;
+        right: 0.75rem;
         top: 50%;
         transform: translateY(-50%);
+        background: none;
+        border: none;
         cursor: pointer;
-        width: 18px;
-        height: 18px;
-        fill: #bbb;
+        font-size: 16px;
+        color: #bbb;
+        padding: 0;
+        line-height: 1;
       }
-
-      .eye-icon:hover {
-        fill: #fff;
+      .eye-btn:focus {
+        outline: none;
       }
 
       /* Remember me */
-      .remember-wrapper {
+      .remember-me {
         display: flex;
         align-items: center;
-        gap: 0.4rem;
-        font-size: 0.85rem;
-        color: #aaa;
+        font-size: 0.9rem;
+        color: #ccc;
+        gap: 0.5rem;
       }
-
-      .remember-wrapper input[type="checkbox"] {
-        width: 14px;
-        height: 14px;
-        cursor: pointer;
+      .remember-me input {
+        width: auto;
+        height: auto;
+        margin: 0;
       }
 
       .auth-btn {
@@ -132,23 +137,13 @@
               placeholder="Password"
               required
             />
-            <!-- Eye SVG -->
-            <svg
-              id="togglePassword"
-              class="eye-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"
-              />
-              <circle cx="12" cy="12" r="2.5" />
-            </svg>
+            <button type="button" id="togglePassword" class="eye-btn">
+              &#128065;
+            </button>
           </div>
-          <div class="remember-wrapper">
-            <input type="checkbox" id="rememberMe" />
-            <label for="rememberMe">Remember Me</label>
-          </div>
+          <label class="remember-me">
+            <input type="checkbox" id="rememberMe" /> Remember me
+          </label>
           <button type="submit" class="auth-btn">Login / Sign Up</button>
         </form>
         <div id="authMessage" class="auth-message" aria-live="polite"></div>
@@ -172,24 +167,13 @@
           localStorage.setItem("sessions", JSON.stringify(sessions));
         }
 
-        const emailInput = document.getElementById("authEmail");
-        const passwordInput = document.getElementById("authPassword");
-        const rememberMe = document.getElementById("rememberMe");
-
-        // Autofill if remembered
-        const remembered = JSON.parse(localStorage.getItem("rememberedUser"));
-        if (remembered) {
-          emailInput.value = remembered.email || "";
-          passwordInput.value = remembered.password || "";
-          rememberMe.checked = true;
-        }
-
         const loginForm = document.getElementById("loginForm");
         loginForm.addEventListener("submit", (e) => {
           e.preventDefault();
 
-          const email = emailInput.value.trim();
-          const password = passwordInput.value.trim();
+          const email = document.getElementById("authEmail").value.trim();
+          const password = document.getElementById("authPassword").value.trim();
+          const rememberMe = document.getElementById("rememberMe").checked;
 
           if (!email || !password) {
             alert("Enter both email and password!");
@@ -215,41 +199,38 @@
           saveUsers(users);
           localStorage.setItem("currentUser", JSON.stringify(users[email]));
 
-          // Save session
           const sessions = getSessions();
           const sessionId = "sess_" + Date.now();
           sessions[sessionId] = { email };
           saveSessions(sessions);
           localStorage.setItem("sessionId", sessionId);
 
-          // Remember login if checked
-          if (rememberMe.checked) {
-            localStorage.setItem(
-              "rememberedUser",
-              JSON.stringify({ email, password })
-            );
+          if (rememberMe) {
+            localStorage.setItem("rememberEmail", email);
           } else {
-            localStorage.removeItem("rememberedUser");
+            localStorage.removeItem("rememberEmail");
           }
 
           window.location.href = "index.html";
         });
 
         // Password eye toggle
+        const passwordInput = document.getElementById("authPassword");
         const togglePassword = document.getElementById("togglePassword");
+
         togglePassword.addEventListener("click", () => {
-          if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            togglePassword.style.fill = "#ffd700"; // highlight active
-            setTimeout(() => {
-              passwordInput.type = "password";
-              togglePassword.style.fill = "#bbb";
-            }, 5000);
-          } else {
+          passwordInput.type = "text";
+          setTimeout(() => {
             passwordInput.type = "password";
-            togglePassword.style.fill = "#bbb";
-          }
+          }, 5000);
         });
+
+        // Restore remembered email
+        const remembered = localStorage.getItem("rememberEmail");
+        if (remembered) {
+          document.getElementById("authEmail").value = remembered;
+          document.getElementById("rememberMe").checked = true;
+        }
       });
 
       // Clear session when closing tab
